@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 type Props = {
     className?: string;
 };
-const HeaderComponent: FC<Props> = ({ className }) => {
-    return <div className={className}>This is header</div>;
+const Header: FC<Props> = () => {
+    return <div className="header">This is header</div>;
 };
 
-export default HeaderComponent;
+export default Header;
