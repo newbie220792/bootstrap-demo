@@ -1,10 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import { routers } from '../routers/routers';
-
 const App = () => {
     return (
-        <div className='App'>
+        <div className='app-container'>
             <Routes>
                 {routers.map((r, index) => {
                     const Page = r.component;
@@ -12,7 +11,7 @@ const App = () => {
                     return (
                         <Route
                             key={index}
-                            path={r.path}
+                            path={process.env.PUBLIC_URL + r.path}
                             element={
                                 <Layout>
                                     <Page />

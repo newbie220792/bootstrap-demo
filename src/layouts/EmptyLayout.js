@@ -1,10 +1,5 @@
 const EmptyLayout = ({ children, ...props }) => {
-    return (
-        <div>
-            <h1>This is empty layout</h1>
-            {children}
-        </div>
-    );
+    return <>{children}</>;
 };
 
 export default EmptyLayout;
