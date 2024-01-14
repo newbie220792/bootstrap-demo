@@ -28,16 +28,33 @@ const DashboardComponent = (props) => {
                 header: 'Action',
                 cell: ({ row }) => {
                     return (
-                        <button
-                            className='text-danger pointer-event '
-                            type='button'
+                        <span
+                            className='fa fa-danger'
                             onClick={() => handleDeleteData(row.index)}
-                        >
-                            X
-                        </button>
+                        ></span>
                     );
                 },
             }),
+        ];
+    }, [datas]);
+
+    const columns1 = useMemo(() => {
+        return [
+            {
+                id: 'id',
+                accessorKey: 'id',
+                header: 'Id',
+            },
+            {
+                id: 'id',
+                accessorKey: 'id',
+                header: 'Id',
+            },
+            {
+                id: 'id',
+                accessorKey: 'id',
+                header: 'Id',
+            },
         ];
     }, [datas]);
 
@@ -54,8 +71,6 @@ const DashboardComponent = (props) => {
         columns,
         getCoreRowModel: getCoreRowModel(),
         meta: {
-            setDatas,
-            datas,
             removeData: (rowIndex) => {
                 const arr = (old) =>
                     old.filter((row, index) => index !== rowIndex);
@@ -75,22 +90,25 @@ const DashboardComponent = (props) => {
         table.options.meta.removeData(index);
     };
 
-    // console.log('re-render');
-    // console.log(datas);
-
-    // useEffect(() => {
-    //     refetch();
-    //     console.log('re-render');
-    // }, [datas.length]);
-
     return (
         <div className='p-2'>
-            <table>
+            <div className='d-flex gap-3 flex-row mb-2'>
+                <button onClick={handleAddData} className='btn btn-success p-2'>
+                    Rerender
+                </button>
+                <button
+                    onClick={handleDeleteData}
+                    className='btn btn-danger p-2'
+                >
+                    Delete
+                </button>
+            </div>
+            <table className='table-bordered table-responsive table'>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
-                                <th key={header.id}>
+                                <th key={header.id} className='text-center '>
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -134,14 +152,6 @@ const DashboardComponent = (props) => {
                     ))}
                 </tfoot>
             </table>
-            <div className='d-flex gap-3 flex-row '>
-                <button onClick={handleAddData} className='border p-2'>
-                    Rerender
-                </button>
-                <button onClick={handleDeleteData} className='border p-2'>
-                    Delete
-                </button>
-            </div>
         </div>
     );
 };
