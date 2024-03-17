@@ -1,0 +1,9 @@
+/build
+/node_modules
+.git
+*.md
+.gitignore
+.idea
+.env.development
+.env.production
+wedding-nginx.conf

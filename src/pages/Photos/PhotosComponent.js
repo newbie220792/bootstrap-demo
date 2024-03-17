@@ -3,6 +3,7 @@ import {useEffect, useMemo, useState} from "react";
 import {fields} from "./photoCommon";
 import {fetchGet} from "../../common/fetchCommon";
 import {CommonSelect} from "../../components/CommonSelect";
+import {AutoComplete} from "./AutoComplete";
 
 export const PhotosComponent = () => {
     const [isDisableSubmit, setIsDisableSubmit] = useState(true);
@@ -119,28 +120,31 @@ export const PhotosComponent = () => {
                 switch (f.type) {
                     case 'input':
                         return <div className='d-flex flex-column' key={i}>
-                            <div className='d-flex flex-row justify-content-center align-items-center'>
-                                <label className='col-6'>{f.label}:</label>
-                                <Controller
-                                    control={control}
-                                    name={f.fieldName}
-                                    rules={{
-                                        // required: true,
-                                        // maxLength: 5
-                                    }}
-                                    defaultValue=''
-                                    render={({field, formState, fieldState}) => (
-                                        <input
-                                            className='form-control input-group-sm'
-                                            {...field}
-                                        />)}
-                                />
+                            <div className='d-flex flex-row justify-content-center align-items-center col-12'>
+                                <label className='col-3'>{f.label}:</label>
+                                <div className='col-6'>
+                                    <Controller
+                                        control={control}
+                                        name={f.fieldName}
+                                        rules={{
+                                            // required: true,
+                                            // maxLength: 5
+                                        }}
+                                        defaultValue=''
+                                        render={({field, formState, fieldState}) => (
+                                            <input
+                                                className='form-control input-group-sm'
+                                                {...field}
+                                            />)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     case 'options':
-                        return <div className='d-flex flex-row justify-content-center align-items-center' key={i}>
-                            <label className='col-6'>{f.label}:</label>
-                            <div className='col-12'>
+                        return <div className='d-flex flex-row justify-content-center align-items-center col-12'
+                                    key={i}>
+                            <label className='col-3'>{f.label}:</label>
+                            <div className='col-6'>
                                 <Controller
                                     control={control}
                                     name={f.fieldName}
@@ -152,6 +156,27 @@ export const PhotosComponent = () => {
                                     render={({field, formState, fieldState}) => (
                                         <CommonSelect {...field} selectOptions={selectedOption[f.fieldName]}
                                                       onChange={handleChangeSelect[f.fieldName] ? handleChangeSelect[f.fieldName] : field.onChange}/>)}
+                                />
+                            </div>
+                        </div>
+                    case 'autoComplete':
+                        return <div className='d-flex flex-row justify-content-center align-items-center col-12'
+                                    key={i}>
+                            <label className='col-3'>{f.label}:</label>
+                            <div className='col-6'>
+                                <Controller
+                                    control={control}
+                                    name={f.fieldName}
+                                    rules={{
+                                        // required: true,
+                                        // maxLength: 5
+                                    }}
+                                    defaultValue=''
+                                    render={({field, formState, fieldState}) => (
+                                        <AutoComplete
+                                            className='form-control input-group-sm'
+                                            {...field}
+                                        />)}
                                 />
                             </div>
                         </div>

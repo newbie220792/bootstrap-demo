@@ -19,4 +19,9 @@ export const menus = [
         path: '/report',
         name: 'Report',
     },
+    {
+        id: 5,
+        path: '/vocabulary',
+        name: 'Vocabulary',
+    },
 ];

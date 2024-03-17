@@ -1,33 +1,43 @@
 import * as React from 'react';
 import {forwardRef, useState} from 'react';
 import {autoCompleteData} from "./select-data";
+import _ from 'lodash'
 
-export const AutoComplete = forwardRef(({suggestOptions, props}, ref) => {
-    const [isShow, setIsShow] = useState(true)
-    const onFocus = (e) => {
-        console.log('focus')
+export const AutoComplete = forwardRef(({suggestOptions, onChange, onFocus, onBlur, value, ...props}, ref) => {
+    const [isShow, setIsShow] = useState(false)
+    const [inputValue, setInputValue] = useState(value)
+    const handleInputFocus = (e) => {
         setIsShow(true)
-        props.onFocus(e);
     }
 
-    const onBlur = (e) => {
-        console.log('blur')
+    const handleInputBlur = _.debounce(e => {
         setIsShow(false)
-        props.onBlur(e);
+    }, 200)
+
+    const handleInputChange = (e) => {
+        console.log('onChange')
+        setInputValue(e.target.value)
+        onChange(e);
     }
 
-    const onChange = (e) => {
-        console.log('onChange')
-        // setIsShow(false)
-        props.onChange(e);
+    const handleClickSelect = (e) => {
+        const value = e.currentTarget.innerText
+        setInputValue(value)
+        onChange(value)
     }
     return (
-        <div>
-            <input ref={ref} className='form-control input-group-sm'
+        <div className='auto-complete-main'>
+            <input ref={ref}
+                   onFocus={handleInputFocus}
+                   onChange={handleInputChange}
+                   onBlur={handleInputBlur}
+                   value={inputValue}
                    {...props}/>
-            {isShow && <ul>
+            {isShow && <ul className='auto-complete-menu'>
                 {autoCompleteData.map((s, i) => {
-                    return <li key={i}>{s}</li>
+                    return <li key={i} onClick={handleClickSelect}>
+                        <div className='auto-complete-item'>{s}</div>
+                    </li>
                 })}
             </ul>}
         </div>

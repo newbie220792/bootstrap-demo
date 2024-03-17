@@ -1,6 +1,6 @@
 body {
-    /* background-color: #f0f8ff; */
-    /*background-image: url('https://images.pexels.com/photos/2317685/pexels-photo-2317685.jpeg');*/
+    background-color: #f0f8ff;
+    background-image: url('https://images.pexels.com/photos/2317685/pexels-photo-2317685.jpeg');
     font-size: 14px;
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
@@ -9,9 +9,37 @@ body {
 .app-container {
     padding: 0;
     margin: 0;
-    /*color: white;*/
+    color: white;
 }
 
 .tooltip {
     --bs-tooltip-bg: red !important;
+}
+
+.auto-complete-main {
+    position: relative;
+    width: 100%;
+}
+
+.auto-complete-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background: #e3e9f1;
+    /*cursor: pointer;*/
+    max-height: 200px;
+    height: auto;
+    overflow: auto;
+    width: 100%;
+    list-style-type: none;
+}
+
+.auto-complete-item {
+    cursor: pointer;
+    margin: 2px;
+    padding: 2px;
+}
+
+.auto-complete-item:hover {
+    background: #9ec5fe;
 }

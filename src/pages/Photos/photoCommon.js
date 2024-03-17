@@ -22,6 +22,12 @@ export const fields = [
         fieldName: 'comment',
         label: 'Comments',
         type: 'options'
+    },
+    {
+        id: 5,
+        fieldName: 'country',
+        label: 'Country',
+        type: 'autoComplete'
     }
 ]
 
