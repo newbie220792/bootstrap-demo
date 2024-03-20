@@ -25,11 +25,12 @@ const AddNewVocabularyForm = () => {
             vocabulary, translation, image
         })
         setVocabularires(arr)
+        reset()
     };
 
     const handleSaveVocabularies = () => {
-        const {vocabulary, translation, image} = getValues();
         //todo save to db
+        // vocabularires;
     }
 
     useEffect(() => {
@@ -39,8 +40,8 @@ const AddNewVocabularyForm = () => {
     }, [vocabularires.length]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={'border-top mt-4 d-flex flex-column align-items-center w-25 m-auto gap-2'}>
+        <form onSubmit={handleSubmit(onSubmit)} className={'w-100'}>
+            <div className={'border-start mt-4 d-flex flex-column align-items-center gap-2'}>
                 <label className={'text-center fw-bold'}>Add new vocabulary :</label>
                 <Form.Label column={true}>Từ mới:</Form.Label>
                 <Controller
@@ -82,6 +83,10 @@ const AddNewVocabularyForm = () => {
                         />)}
                 />
                 <label>{`Number of Vocabularies: ${vocabularires.length}`}</label>
+                <div className={'d-flex flex-row gap-3'}>
+                    <button type={'submit'} className={'btn btn-success mt-2'}>Add</button>
+                    <button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save</button>
+                </div>
             </div>
         </form>
     );
