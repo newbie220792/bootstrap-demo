@@ -1,6 +1,7 @@
 import {Controller, useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import {Image} from "react-bootstrap";
+import AddNewVocabularyForm from "./AddNewVocabularyForm";
 
 export const VocabularyComponent = () => {
     const vocabularies = ['medicine', 'refrigerator', 'emergency', 'lifeguard']
@@ -65,8 +66,13 @@ export const VocabularyComponent = () => {
                             />)}
                     />
                     <button type={"submit"} className={'btn btn-success'}>Next ❯</button>
+                    <button type={"button"} className={'btn btn-success'} onClick={handleListenAgain}>Listen again!
+                    </button>
                 </div>
-                <button type={"button"} className={'btn btn-success'} onClick={handleListenAgain}>Listen again!</button>
+                <div className={'text-center mt-4'}>
+                    <Image src={'https://i.pinimg.com/originals/fe/01/3f/fe013f692231e4e61376f11c49779440.gif'}
+                           style={{height: 100}}/>
+                </div>
                 <div className={'d-flex justify-content-center mt-4'}>
                     {answer === 'false' && <Image
                         src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}
@@ -76,6 +82,7 @@ export const VocabularyComponent = () => {
                                style={{height: 100}}/>}
                 </div>
             </form>
+            <AddNewVocabularyForm/>
         </>
 
     );
