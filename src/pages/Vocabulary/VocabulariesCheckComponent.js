@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
 import {Image} from "react-bootstrap";
+import {fetchGet} from "../../common/fetchCommon";
 
 const VocabulariesCheckComponent = () => {
     const vocabularies = ['medicine', 'refrigerator', 'emergency', 'lifeguard']
@@ -49,8 +50,14 @@ const VocabulariesCheckComponent = () => {
         }
     }, [vocabularyIndex, isStarted]);
 
+    const getVocabularies = () => {
+        fetchGet('api/v1/vocabularies/list', null).then(res => {
+
+        })
+    }
     useEffect(() => {
         // todo get all vocabularies
+        getVocabularies();
     }, []);
 
     return (
