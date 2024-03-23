@@ -1,2 +1,22 @@
+GET http://localhost:9090/api/v1/vocabularies/update?id=1
+Accept: application/json
+
+###
+GET http://localhost:9090/api/v1/vocabularies/list
+Accept: application/json
+
+###
+POST http://localhost:9090/api/v1/vocabularies/add
+Content-Type: application/json
+
+[
+  {
+    "vocabulary": "medicine",
+    "vietnameseTranslation": "thuốc",
+    "imageDescription": "https://medlineplus.gov/images/Medicines.jpg"
+  }
+]
+
+###
 GET http://localhost:9090/api/v1/vocabularies
 Accept: application/json

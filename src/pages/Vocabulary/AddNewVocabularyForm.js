@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Form} from 'react-bootstrap'
 import {Controller, useForm} from "react-hook-form";
+import {VocabulariesService} from "../../services/vocabulariesService";
 
 const AddNewVocabularyForm = () => {
     const [vocabularires, setVocabularires] = useState([])
@@ -30,7 +31,9 @@ const AddNewVocabularyForm = () => {
 
     const handleSaveVocabularies = () => {
         //todo save to db
-        // vocabularires;
+        VocabulariesService.addNewVocabularies(vocabularires).then(data => {
+            alert(data.message)
+        })
     }
 
     useEffect(() => {
@@ -85,7 +88,8 @@ const AddNewVocabularyForm = () => {
                 <label>{`Number of Vocabularies: ${vocabularires.length}`}</label>
                 <div className={'d-flex flex-row gap-3'}>
                     <button type={'submit'} className={'btn btn-success mt-2'}>Add</button>
-                    <button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save</button>
+                    <button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save
+                    </button>
                 </div>
             </div>
         </form>

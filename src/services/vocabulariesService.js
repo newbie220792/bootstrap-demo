@@ -1,6 +1,7 @@
 import {fetchGet, fetchPost} from "../common/fetchCommon";
 
-const VocabulariesService = {
-  getList : () => fetchGet('', null),
-  addNewVocabularies : (vocabularies) => fetchPost('', vocabularies)
+export const VocabulariesService = {
+    getList: () => fetchGet('/vocabularies/list', null),
+    addNewVocabularies: (vocabularies) => fetchPost('/vocabularies/add', vocabularies),
+    updateVocabularies: (vocabularyId) => fetchGet('/vocabularies/update?id=' + vocabularyId, null)
 }
