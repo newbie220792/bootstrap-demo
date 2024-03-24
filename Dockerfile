@@ -13,7 +13,7 @@
 FROM nginx:stable-alpine
 WORKDIR /app
 COPY ./build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
 
 #step 1: Tạo builder mới cho platform arm32: Chạy lệnh sau để tạo một builder mới cho platform arm32:
@@ -23,4 +23,8 @@ CMD ["nginx", "-g", "daemon off;"]
 #trên một máy tính x86.
 #--docker buildx inspect --bootstrap
 #step final docker build
-#--docker buildx build --platform linux/arm/v7 -t your_image_name:tag .
+#--docker buildx build --load --platform linux/arm/v7 -t vocabularies:1.0 .
+#docker run -p 4200:80 bootstrap-demo:1.0
+ #http://localhost/hello
+
+ #docker system prune -a --volumes : loại bỏ tất cả container, image, network, build cache và volume không được sử dụng

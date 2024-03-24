@@ -37,13 +37,13 @@ const VocabulariesCheckComponent = () => {
     const onSubmit = () => {
         const {vocabulary} = getValues()
         if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
-            setAnswer('true')
-            setVocabularyIndex(prevState => ++prevState);
-            reset();
-            const vocabularyPassed = vocabularies.findLast(v => v.vocabulary = vocabulary);
+            const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
                 handleUpdateVocabulary(vocabularyPassed.id);
             }
+            setAnswer('true')
+            setVocabularyIndex(prevState => ++prevState);
+            reset();
         } else {
             setAnswer('false')
             handleSpeak(vocabularies[vocabularyIndex].vocabulary)
@@ -62,7 +62,7 @@ const VocabulariesCheckComponent = () => {
             alert('You have been finish your course today')
             handleSpeak('You have been finish your course today')
         }
-    }, [vocabularyIndex, isStarted]);
+    }, [vocabularyIndex, isStarted, vocabularies]);
 
     const getVocabularies = () => {
         VocabulariesService.getList().then(data => {

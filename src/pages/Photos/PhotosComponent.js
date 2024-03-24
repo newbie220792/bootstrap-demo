@@ -1,7 +1,6 @@
 import {Controller, useForm} from "react-hook-form";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {fields} from "./photoCommon";
-import {fetchGet} from "../../common/fetchCommon";
 import {CommonSelect} from "../../components/CommonSelect";
 import {AutoComplete} from "./AutoComplete";
 
@@ -9,8 +8,8 @@ export const PhotosComponent = () => {
     const [isDisableSubmit, setIsDisableSubmit] = useState(true);
     const [selectedOption, setSelectedOption] = useState({});
 
-    const POST_URL = 'https://jsonplaceholder.typicode.com/posts';
-    const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments';
+    // const POST_URL = 'https://jsonplaceholder.typicode.com/posts';
+    // const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments';
     const {
         handleSubmit,
         getValues,
@@ -75,44 +74,44 @@ export const PhotosComponent = () => {
         switch (fieldName) {
             case 'post':
             case 'comment':
-                const posts = await fetchGet(POST_URL, null);
-                const postSelects = posts.map(p => {
-                    return {value: p.id, label: p.title}
-                })
-                const post = posts.filter(p => p.id === 12)
-
-                const comments = await fetchGet(COMMENT_URL, {postId: post[0].id});
-                const commentSelect = comments.map(c => {
-                    return {value: c.id, label: c.name}
-                })
-                setSelectedOption(prevState => {
-                    return {...prevState, comment: commentSelect, post: postSelects}
-                })
+                // const posts = await fetchGet(POST_URL, null);
+                // const postSelects = posts.map(p => {
+                //     return {value: p.id, label: p.title}
+                // })
+                // const post = posts.filter(p => p.id === 12)
+                //
+                // const comments = await fetchGet(COMMENT_URL, {postId: post[0].id});
+                // const commentSelect = comments.map(c => {
+                //     return {value: c.id, label: c.name}
+                // })
+                // setSelectedOption(prevState => {
+                //     return {...prevState, comment: commentSelect, post: postSelects}
+                // })
                 break;
         }
     }
 
     const handlePostSelect = async (value) => {
-        console.log(value)
-        setValue('post', value)
-        const comments = await fetchGet(COMMENT_URL, {postId: value});
-        const commentSelect = comments.map(c => {
-            return {value: c.id, label: c.name}
-        })
-        setSelectedOption(prevState => {
-            return {...prevState, comment: commentSelect}
-        })
+        // console.log(value)
+        // setValue('post', value)
+        // const comments = await fetchGet(COMMENT_URL, {postId: value});
+        // const commentSelect = comments.map(c => {
+        //     return {value: c.id, label: c.name}
+        // })
+        // setSelectedOption(prevState => {
+        //     return {...prevState, comment: commentSelect}
+        // })
     }
 
     const handleChangeSelect = {
         post: handlePostSelect
     }
 
-    useEffect(() => {
-        fields.forEach(f => {
-            getSelectOptions(f.fieldName)
-        })
-    }, [fields]);
+    // useEffect(() => {
+    //     fields.forEach(f => {
+    //         getSelectOptions(f.fieldName)
+    //     })
+    // }, [fields]);
 
     return (<div>
         <form onSubmit={handleSubmit(onSubmit)} className='m-5 d-flex flex-column align-items-center gap-5'>

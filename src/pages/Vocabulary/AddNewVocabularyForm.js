@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Form} from 'react-bootstrap'
 import {Controller, useForm} from "react-hook-form";
 import {VocabulariesService} from "../../services/vocabulariesService";
 
 const AddNewVocabularyForm = () => {
-    const [vocabularires, setVocabularires] = useState([])
+    const [vocabularies, setVocabularies] = useState([])
     const {
         handleSubmit,
         control,
@@ -15,32 +15,46 @@ const AddNewVocabularyForm = () => {
         reValidateMode: 'onChange',
         defaultValues: {
             vocabulary: '',
-            translation: '',
-            image: '',
+            vietnameseTranslation: '',
+            imageDescription: '',
         }
     });
     const onSubmit = () => {
-        const {vocabulary, translation, image} = getValues();
-        let arr = vocabularires;
-        arr.push({
-            vocabulary, translation, image
-        })
-        setVocabularires(arr)
+        const {vocabulary, vietnameseTranslation, imageDescription} = getValues();
+        // let arr = vocabularies;
+        // arr.push({
+        //     vocabulary, vietnameseTranslation, imageDescription
+        // })
+        // setVocabularies(arr)
+
+        VocabulariesService.addVocabulary(getValues()).then(data => {
+            if (data && data.status === 0) {
+                alert(data.message)
+                // setVocabularies([])
+            } else {
+                alert('Add vocabularies fail')
+            }
+        }).catch(() => alert('Add vocabularies fail'))
         reset()
     };
 
-    const handleSaveVocabularies = () => {
-        //todo save to db
-        VocabulariesService.addNewVocabularies(vocabularires).then(data => {
-            alert(data.message)
-        })
-    }
+    // const handleSaveVocabularies = () => {
+    //     //todo save to db
+    //     VocabulariesService.addVocabularies(vocabularies).then(data => {
+    //         if (data && data.status === 0) {
+    //             alert(data.message)
+    //             setVocabularies([])
+    //         } else {
+    //             alert('Add vocabularies fail')
+    //         }
+    //     }).catch(() => alert('Add vocabularies fail'))
+    // }
 
-    useEffect(() => {
-        if (vocabularires.length > 20) {
-            handleSaveVocabularies()
-        }
-    }, [vocabularires.length]);
+    // useEffect(() => {
+    //     if (vocabularies.length > 20) {
+    //         handleSaveVocabularies()
+    //     }
+    // }, [vocabularies.length]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={'w-100'}>
@@ -62,7 +76,7 @@ const AddNewVocabularyForm = () => {
                 <label>Nghĩa:</label>
                 <Controller
                     control={control}
-                    name={'translation'}
+                    name={'vietnameseTranslation'}
                     rules={{
                         required: true,
                     }}
@@ -75,7 +89,7 @@ const AddNewVocabularyForm = () => {
                 <label>Ảnh minh họa:</label>
                 <Controller
                     control={control}
-                    name={'image'}
+                    name={'imageDescription'}
                     rules={{
                         required: true,
                     }}
@@ -85,11 +99,11 @@ const AddNewVocabularyForm = () => {
                             {...field}
                         />)}
                 />
-                <label>{`Number of Vocabularies: ${vocabularires.length}`}</label>
+                <label>{`Number of Vocabularies: ${vocabularies.length}`}</label>
                 <div className={'d-flex flex-row gap-3'}>
                     <button type={'submit'} className={'btn btn-success mt-2'}>Add</button>
-                    <button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save
-                    </button>
+                    {/*<button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save*/}
+                    {/*</button>*/}
                 </div>
             </div>
         </form>
