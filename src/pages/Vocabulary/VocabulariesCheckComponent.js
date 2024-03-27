@@ -75,7 +75,7 @@ const VocabulariesCheckComponent = () => {
         })
     }
     useEffect(() => {
-        getVocabularies();
+        // getVocabularies();
     }, []);
 
     return (
