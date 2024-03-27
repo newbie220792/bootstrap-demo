@@ -9,6 +9,10 @@ Accept: application/json
 GET http://192.168.1.89:9090/api/v1/vocabularies/list
 Accept: application/json
 
+###
+GET http://localhost:9090/api/v1/vocabularies/add?vocabulary=compare
+Accept: application/json
+
 
 ###
 POST http://localhost:9090/api/v1/vocabularies/add

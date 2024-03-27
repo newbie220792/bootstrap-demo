@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {Form} from 'react-bootstrap'
 import {Controller, useForm} from "react-hook-form";
+import $ from "jquery";
 import {VocabulariesService} from "../../services/vocabulariesService";
+import {fetchPostImage} from "../../common/fetchCommon";
 
 const AddNewVocabularyForm = () => {
     const [vocabularies, setVocabularies] = useState([])
@@ -19,42 +21,32 @@ const AddNewVocabularyForm = () => {
             imageDescription: '',
         }
     });
-    const onSubmit = () => {
-        const {vocabulary, vietnameseTranslation, imageDescription} = getValues();
-        // let arr = vocabularies;
-        // arr.push({
-        //     vocabulary, vietnameseTranslation, imageDescription
-        // })
-        // setVocabularies(arr)
 
-        VocabulariesService.addVocabulary(getValues()).then(data => {
+    const onTranslate = async (sourceText) => {
+        const sourceLang = 'en';
+        const targetLang = 'vi';
+        const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+        const data = await $.getJSON(url);
+        return data[0][0][0];
+    }
+    const onSubmit = async () => {
+        const {vocabulary} = getValues();
+        const vietnameseTranslation = await onTranslate(vocabulary)
+        const imageDescription = await fetchPostImage(null, null);
+        const req = {
+            vocabulary: vocabulary,
+            vietnameseTranslation: vietnameseTranslation,
+            imageDescription: imageDescription
+        }
+        VocabulariesService.addVocabulary(req).then(data => {
             if (data && data.status === 0) {
                 alert(data.message)
-                // setVocabularies([])
             } else {
                 alert('Add vocabularies fail')
             }
         }).catch(() => alert('Add vocabularies fail'))
         reset()
     };
-
-    // const handleSaveVocabularies = () => {
-    //     //todo save to db
-    //     VocabulariesService.addVocabularies(vocabularies).then(data => {
-    //         if (data && data.status === 0) {
-    //             alert(data.message)
-    //             setVocabularies([])
-    //         } else {
-    //             alert('Add vocabularies fail')
-    //         }
-    //     }).catch(() => alert('Add vocabularies fail'))
-    // }
-
-    // useEffect(() => {
-    //     if (vocabularies.length > 20) {
-    //         handleSaveVocabularies()
-    //     }
-    // }, [vocabularies.length]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={'w-100'}>
@@ -65,20 +57,7 @@ const AddNewVocabularyForm = () => {
                     control={control}
                     name={'vocabulary'}
                     rules={{
-                        required: true,
-                    }}
-                    render={({field, formState, fieldState}) => (
-                        <input
-                            className={`form-control input-group-sm ${fieldState.error ? 'is-invalid' : ''}`}
-                            {...field}
-                        />)}
-                />
-                <label>Nghĩa:</label>
-                <Controller
-                    control={control}
-                    name={'vietnameseTranslation'}
-                    rules={{
-                        required: true,
+                        // required: true,
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
@@ -91,7 +70,7 @@ const AddNewVocabularyForm = () => {
                     control={control}
                     name={'imageDescription'}
                     rules={{
-                        required: true,
+                        // required: true,
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
@@ -99,11 +78,8 @@ const AddNewVocabularyForm = () => {
                             {...field}
                         />)}
                 />
-                <label>{`Number of Vocabularies: ${vocabularies.length}`}</label>
                 <div className={'d-flex flex-row gap-3'}>
                     <button type={'submit'} className={'btn btn-success mt-2'}>Add</button>
-                    {/*<button type={'button'} className={'btn btn-secondary mt-2'} onClick={handleSaveVocabularies}>Save*/}
-                    {/*</button>*/}
                 </div>
             </div>
         </form>
