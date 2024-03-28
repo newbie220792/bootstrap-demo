@@ -9,6 +9,7 @@ const VocabulariesCheckComponent = () => {
     const [vocabularyIndex, setVocabularyIndex] = useState(0)
     const [isStarted, setIsStarted] = useState(true)
     const [answer, setAnswer] = useState('')
+    // const [des, setDes] = useState([]);
     const {
         handleSubmit,
         control,
@@ -75,8 +76,88 @@ const VocabulariesCheckComponent = () => {
         })
     }
     useEffect(() => {
-        // getVocabularies();
+        getVocabularies();
     }, []);
+    const des = [
+        {
+            "partOfSpeech": "noun",
+            "definitions":
+                [
+                    {
+                        "definition": "A colorful, conspicuous structure associated with angiosperms, frequently scented and attracting various insects, and which may or may not be used for sexual reproduction.",
+                        "synonyms": [],
+                        "antonyms": []
+                    },
+                    {
+                        "definition": "A reproductive structure in angiosperms (flowering plants), often conspicuously colourful and typically including sepals, petals, and either or both stamens and/or a pistil.",
+                        "synonyms": [],
+                        "antonyms": []
+                    }, {
+                    "definition": "A plant that bears flowers, especially a plant that is small and lacks wood.",
+                    "synonyms": [],
+                    "antonyms": [],
+                    "example": "We transplanted the flowers to a larger pot."
+                }, {
+                    "definition": "(usually with in) Of plants, a state of bearing blooms.",
+                    "synonyms": [],
+                    "antonyms": [],
+                    "example": "The dogwoods are in flower this week."
+                }, {
+                    "definition": "(hypocoristic) The vulva, especially the labia majora.",
+                    "synonyms": [],
+                    "antonyms": []
+                }, {
+                    "definition": "The best examples or representatives of a group.",
+                    "synonyms": [],
+                    "antonyms": [],
+                    "example": "We selected the flower of the applicants."
+                }, {
+                    "definition": "The best state of things; the prime.",
+                    "synonyms": [],
+                    "antonyms": [],
+                    "example": "She was in the flower of her life."
+                }, {
+                    "definition": "Flour.",
+                    "synonyms": [],
+                    "antonyms": []
+                }, {
+                    "definition": "(in the plural) A substance in the form of a powder, especially when condensed from sublimation.",
+                    "synonyms": [],
+                    "antonyms": [],
+                    "example": "the flowers of sulphur"
+                }, {
+                    "definition": "A figure of speech; an ornament of style.",
+                    "synonyms": [],
+                    "antonyms": []
+                }, {
+                    "definition": "Ornamental type used chiefly for borders around pages, cards, etc.",
+                    "synonyms": [],
+                    "antonyms": []
+                }, {"definition": "(in the plural) Menstrual discharges.", "synonyms": [], "antonyms": []}],
+            // "synonyms": ["cream", "prime", "head", "pseudanthium"],
+            // "antonyms": []
+        },
+        {
+            "partOfSpeech": "verb",
+            "definitions": [{
+                "definition": "To put forth blooms.",
+                "synonyms": [],
+                "antonyms": [],
+                "example": "This plant flowers in June."
+            }, {
+                "definition": "To decorate with pictures of flowers.",
+                "synonyms": [],
+                "antonyms": []
+            }, {
+                "definition": "To reach a state of full development or achievement.",
+                "synonyms": [],
+                "antonyms": []
+            }, {"definition": "To froth; to ferment gently, as new beer.", "synonyms": [], "antonyms": []},
+                {"definition": "To come off as flowers by sublimation.", "synonyms": [], "antonyms": []}],
+            "synonyms": ["flourish", "bloom", "blossom"],
+            "antonyms": []
+        }
+    ]
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -101,6 +182,28 @@ const VocabulariesCheckComponent = () => {
             </div>
             {errors.vocabulary &&
                 <label className={'text-center w-100 text-danger mt-2'}>{errors.vocabulary.message}</label>}
+            <div className={'row'}>
+                <label className={'col-1 text-end'}>&#x2022;</label>
+                <label className={'col-10 text-start fw-bold'}>Description:</label>
+            </div>
+            {des.map((d, index) => <div key={index}
+                                        className={'row ms-3'}>
+                <label className={'col-1 text-end'}>&#x2022;</label>
+                <label className={'col-9 text-start'}>Part Of Speech: {d.partOfSpeech}</label>
+                {d.definitions.map((de, index) => index < 6 && <div key={index} className={'row ms-4'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <div className={'col-11'}>
+                        <label className={'text-start'}>Definition {++index}: {de.definition}
+                            <button onClick={() => handleSpeak(de.definition)}>🔈</button>
+                        </label>
+                    </div>
+
+                </div>)
+                }
+            </div>)}
+            {
+                vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation && <label
+                    className={'text-center w-100 mt-2'}>{vocabularies[vocabularyIndex].vietnameseTranslation}</label>}
             {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
                 <div className={'text-center mt-4'}>
                     <Image src={vocabularies[vocabularyIndex].imageDescription}
