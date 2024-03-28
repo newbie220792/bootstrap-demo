@@ -181,34 +181,44 @@ const VocabulariesCheckComponent = () => {
                 </button>
             </div>
             {errors.vocabulary &&
-                <label className={'text-center w-100 text-danger mt-2'}>{errors.vocabulary.message}</label>}
-            <div className={'row'}>
+                <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
+            <div className={'row mt-2'}>
+                <label className={'col-1 text-end'}>&#x2022;</label>
+                <label
+                    className={'col-10 text-start fw-bold'}>Vietnamese
+                    Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
+                        <label
+                            className={'text-center w-100 mt-2'}>{vocabularies[vocabularyIndex].vietnameseTranslation}</label>}</label>
+
+            </div>
+            <div className={'row mt-2'}>
+                {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
+                    <div className={'text-center mt-4'}>
+                        <Image src={vocabularies[vocabularyIndex].imageDescription}
+                               style={{height: 100}}/>
+                    </div>}
+            </div>
+            <div className={'row mt-2'}>
                 <label className={'col-1 text-end'}>&#x2022;</label>
                 <label className={'col-10 text-start fw-bold'}>Description:</label>
             </div>
-            {des.map((d, index) => <div key={index}
-                                        className={'row ms-3'}>
-                <label className={'col-1 text-end'}>&#x2022;</label>
-                <label className={'col-9 text-start'}>Part Of Speech: {d.partOfSpeech}</label>
-                {d.definitions.map((de, index) => index < 6 && <div key={index} className={'row ms-4'}>
-                    <label className={'col-1 text-end'}>&#x2022;</label>
-                    <div className={'col-11'}>
-                        <label className={'text-start'}>Definition {++index}: {de.definition}
-                            <button onClick={() => handleSpeak(de.definition)}>🔈</button>
-                        </label>
-                    </div>
+            {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].descripsion
+                && vocabularies[vocabularyIndex].descripsion.length > 0 && vocabularies[vocabularyIndex].descripsion.map((d, index) =>
+                    <div key={index}
+                         className={'row ms-3'}>
+                        <label className={'col-1 text-end'}>&#x2022;</label>
+                        <label className={'col-9 text-start'}>Part Of Speech: {d.partOfSpeech}</label>
+                        {d.definitions.map((de, index) => index < 6 && <div key={index} className={'row ms-4'}>
+                            <label className={'col-1 text-end'}>&#x2022;</label>
+                            <div className={'col-11'}>
+                                <label className={'text-start'}>Definition {++index}: {de.definition}
+                                    <button onClick={() => handleSpeak(de.definition)}>🔈</button>
+                                </label>
+                            </div>
 
-                </div>)
-                }
-            </div>)}
-            {
-                vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation && <label
-                    className={'text-center w-100 mt-2'}>{vocabularies[vocabularyIndex].vietnameseTranslation}</label>}
-            {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
-                <div className={'text-center mt-4'}>
-                    <Image src={vocabularies[vocabularyIndex].imageDescription}
-                           style={{height: 100}}/>
-                </div>}
+                        </div>)
+                        }
+                    </div>)}
             <div className={'d-flex justify-content-center mt-4'}>
                 {answer === 'false' && <Image
                     src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}

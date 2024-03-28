@@ -12,7 +12,7 @@ const Footer = () => {
         return <label>Days: {days}</label>
     }
     return (
-        <div className='footer'>
+        <div className='footer border-top'>
             <div className='d-flex justify-content-around'>
                 <label>Wedding day: {weddingDay}</label>
                 {NumberDays()}

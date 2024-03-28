@@ -3,6 +3,7 @@ import {Form} from 'react-bootstrap'
 import {Controller, useForm} from "react-hook-form";
 import $ from "jquery";
 import {VocabulariesService} from "../../services/vocabulariesService";
+import {fetchPostImage} from "../../common/fetchCommon";
 
 const AddNewVocabularyForm = () => {
     const [vocabularies, setVocabularies] = useState([])
@@ -29,9 +30,9 @@ const AddNewVocabularyForm = () => {
         return data[0][0][0];
     }
     const onSubmit = async () => {
-        const {vocabulary, imageDescription} = getValues();
+        const {vocabulary} = getValues();
         const vietnameseTranslation = await onTranslate(vocabulary)
-        // const imageDescription = await fetchPostImage(null, null);
+        const imageDescription = await fetchPostImage(null, null);
         const req = {
             vocabulary: vocabulary,
             vietnameseTranslation: vietnameseTranslation,
@@ -49,7 +50,7 @@ const AddNewVocabularyForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={'w-100'}>
-            <div className={'border-start mt-4 d-flex flex-column align-items-center gap-2'}>
+            <div className={'mt-4 d-flex flex-column align-items-center gap-2'}>
                 <label className={'text-center fw-bold'}>Add new vocabulary :</label>
                 <Form.Label column={true}>Từ mới:</Form.Label>
                 <Controller
