@@ -21,8 +21,12 @@ const VocabulariesCheckComponent = () => {
             vocabulary: ''
         }
     });
-    const handleUpdateVocabulary = (id) => {
-        VocabulariesService.updateVocabularies(id).then();
+    const handleUpdateVocabulary = (id, numberOfSubmit) => {
+        const req = {
+            id: id,
+            times: numberOfSubmit
+        }
+        VocabulariesService.updateVocabularies(req).then();
     }
     const handleSpeak = (vocabulary) => {
         if (vocabulary) {
@@ -38,7 +42,7 @@ const VocabulariesCheckComponent = () => {
         if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
-                handleUpdateVocabulary(vocabularyPassed.id);
+                handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
             setAnswer('true')
             setVocabularyIndex(prevState => ++prevState);
