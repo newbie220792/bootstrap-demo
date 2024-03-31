@@ -34,8 +34,6 @@ const VocabulariesCheckComponent = () => {
         } else {
             window.responsiveVoice.speak("Vocabulary has not found")
         }
-
-
     }
     const onSubmit = () => {
         const {vocabulary} = getValues()
@@ -81,10 +79,14 @@ const VocabulariesCheckComponent = () => {
         getVocabularies();
     }, []);
 
+    const formatPhonetic = (phonetic) => {
+        return phonetic.replaceAll('\"', '')
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={'d-flex justify-content-center gap-1 mt-4'}>
-                <button type={"submit"} className={'btn btn-success'}>❮ Previous</button>
+                <button type={"submit"} className={'btn btn-success'}>❮</button>
                 <Controller
                     control={control}
                     name={'vocabulary'}
@@ -97,10 +99,8 @@ const VocabulariesCheckComponent = () => {
                             {...field}
                         />)}
                 />
-                <button type={"submit"} className={'btn btn-success'}>Next ❯</button>
-                <button type={"button"} className={'btn btn-success'} onClick={handleListenAgain}>Listen
-                    again!
-                </button>
+                <button type={"submit"} className={'btn btn-success'}>❯</button>
+                {/*<button type={"button"} onClick={handleListenAgain}>🔈</button>*/}
             </div>
             {errors.vocabulary &&
                 <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
@@ -114,6 +114,15 @@ const VocabulariesCheckComponent = () => {
             <div className={'row mt-2'}>
                 <label className={'col-1 text-end'}>&#x2022;</label>
                 <label
+                    className={'col-10 text-start fw-bold'}>Phonetic: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].phonetic &&
+                    <span className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].phonetic)}</span>}
+                    <span className={'ms-1 phonetic'} onClick={handleListenAgain}>🔈</span>
+                </label>
+
+            </div>
+            <div className={'row mt-2'}>
+                <label className={'col-1 text-end'}>&#x2022;</label>
+                <label
                     className={'col-10 text-start fw-bold'}>Vietnamese
                     Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
                         vocabularies[vocabularyIndex].vietnameseTranslation}</label>
@@ -122,31 +131,9 @@ const VocabulariesCheckComponent = () => {
             <div className={'row mt-2'}>
                 {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
                     <div className={'text-center mt-4'}>
-                        <Image src={vocabularies[vocabularyIndex].imageDescription}
-                               style={{height: 100}}/>
+                        <Image src={vocabularies[vocabularyIndex].imageDescription}/>
                     </div>}
             </div>
-            {/*<div className={'row mt-2'}>*/}
-            {/*    <label className={'col-1 text-end'}>&#x2022;</label>*/}
-            {/*    <label className={'col-10 text-start fw-bold'}>Description:</label>*/}
-            {/*</div>*/}
-            {/*{vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].descripsion*/}
-            {/*    && vocabularies[vocabularyIndex].descripsion.length > 0 && vocabularies[vocabularyIndex].descripsion.map((d, index) =>*/}
-            {/*        <div key={index}*/}
-            {/*             className={'row ms-3'}>*/}
-            {/*            <label className={'col-1 text-end'}>&#x2022;</label>*/}
-            {/*            <label className={'col-9 text-start'}>Part Of Speech: {d.partOfSpeech}</label>*/}
-            {/*            {d.definitions.map((de, index) => index < 6 && <div key={index} className={'row ms-4'}>*/}
-            {/*                <label className={'col-1 text-end'}>&#x2022;</label>*/}
-            {/*                <div className={'col-11'}>*/}
-            {/*                    <label className={'text-start'}>Definition {++index}: {de.definition}*/}
-            {/*                        <button onClick={() => handleSpeak(de.definition)}>🔈</button>*/}
-            {/*                    </label>*/}
-            {/*                </div>*/}
-
-            {/*            </div>)*/}
-            {/*            }*/}
-            {/*        </div>)}*/}
             <div className={'d-flex justify-content-center mt-4'}>
                 {answer === 'false' && <Image
                     src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}

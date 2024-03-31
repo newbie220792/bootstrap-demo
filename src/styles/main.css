@@ -52,3 +52,11 @@ body {
 .auto-complete-item:hover {
     background: #9ec5fe;
 }
+
+.phonetic {
+    cursor: pointer;
+}
+
+.btn-done {
+    
+}

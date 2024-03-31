@@ -21,6 +21,14 @@ const AddNewVocabularyForm = () => {
         }
     });
 
+    const handleSpeak = (vocabulary) => {
+        if (vocabulary) {
+            window.responsiveVoice.speak(vocabulary)
+        } else {
+            window.responsiveVoice.speak("Vocabulary has not found")
+        }
+    }
+
     const onTranslate = async (sourceText) => {
         const sourceLang = 'en';
         const targetLang = 'vi';
@@ -30,6 +38,7 @@ const AddNewVocabularyForm = () => {
     }
     const onSubmit = async () => {
         const {vocabulary, imageDescription} = getValues();
+        handleSpeak(vocabulary)
         const vietnameseTranslation = await onTranslate(vocabulary)
         // const imageDescription = await fetchPostImage(null, null);
         const req = {
@@ -39,11 +48,11 @@ const AddNewVocabularyForm = () => {
         }
         VocabulariesService.addVocabulary(req).then(data => {
             if (data && data.status === 0) {
-                alert(data.message)
+                handleSpeak("Success")
             } else {
-                alert('Add vocabularies fail')
+                handleSpeak(data.message)
             }
-        }).catch(() => alert('Add vocabularies fail'))
+        }).catch(() => handleSpeak('Add vocabularies fail'))
         reset()
     };
 

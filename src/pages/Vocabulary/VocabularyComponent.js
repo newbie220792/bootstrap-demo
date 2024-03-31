@@ -1,5 +1,6 @@
 import AddNewVocabularyForm from "./AddNewVocabularyForm";
 import VocabulariesCheckComponent from "./VocabulariesCheckComponent";
+import TodoListComponent from "./TodoListComponent";
 
 export const VocabularyComponent = () => {
     return (
@@ -11,6 +12,7 @@ export const VocabularyComponent = () => {
             </div>
             <div className={'col-4'}>
                 <AddNewVocabularyForm/>
+                <TodoListComponent/>
             </div>
         </div>
     );
