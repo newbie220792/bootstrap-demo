@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
 import {Image} from "react-bootstrap";
 import {VocabulariesService} from "../../services/vocabulariesService";
+import _ from "lodash";
 
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([])
@@ -29,7 +30,7 @@ const VocabulariesCheckComponent = () => {
         VocabulariesService.updateVocabularies(req).then();
     }
     const handleSpeak = (vocabulary) => {
-        if (vocabulary) {
+        if (!_.isEmpty(vocabulary)) {
             window.responsiveVoice.speak(vocabulary)
         } else {
             window.responsiveVoice.speak("Vocabulary has not found")
@@ -42,11 +43,11 @@ const VocabulariesCheckComponent = () => {
             if (vocabularyPassed && vocabularyPassed.id) {
                 handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
-            setAnswer('true')
+            // setAnswer('true')
             setVocabularyIndex(prevState => ++prevState);
             reset(null, {keepSubmitCount: false, keepDefaultValues: true});
         } else {
-            setAnswer('false')
+            // setAnswer('false')
             handleSpeak(vocabularies[vocabularyIndex].vocabulary)
             setError('vocabulary', {message: 'Wrong vocabulary. Input again!'})
         }
@@ -100,7 +101,6 @@ const VocabulariesCheckComponent = () => {
                         />)}
                 />
                 <button type={"submit"} className={'btn btn-success'}>❯</button>
-                {/*<button type={"button"} onClick={handleListenAgain}>🔈</button>*/}
             </div>
             {errors.vocabulary &&
                 <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
@@ -111,38 +111,40 @@ const VocabulariesCheckComponent = () => {
                     vocabularies[vocabularyIndex].vocabulary}</label>
 
             </div>}
-            <div className={'row mt-2'}>
-                <label className={'col-1 text-end'}>&#x2022;</label>
-                <label
-                    className={'col-10 text-start fw-bold'}>Phonetic: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].phonetic &&
-                    <span className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].phonetic)}</span>}
-                    <span className={'ms-1 phonetic'} onClick={handleListenAgain}>🔈</span>
-                </label>
+            {vocabularies && vocabularies.length > 0 && vocabularies[vocabularyIndex] && <>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Phonetic: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].phonetic &&
+                        <span className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].phonetic)}</span>}
+                        <span className={'ms-1 phonetic'} onClick={handleListenAgain}>🔈</span>
+                    </label>
 
-            </div>
-            <div className={'row mt-2'}>
-                <label className={'col-1 text-end'}>&#x2022;</label>
-                <label
-                    className={'col-10 text-start fw-bold'}>Vietnamese
-                    Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
-                        vocabularies[vocabularyIndex].vietnameseTranslation}</label>
+                </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Vietnamese
+                        Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
+                            vocabularies[vocabularyIndex].vietnameseTranslation}</label>
 
-            </div>
+                </div>
+            </>}
             <div className={'row mt-2'}>
                 {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
                     <div className={'text-center mt-4'}>
                         <Image src={vocabularies[vocabularyIndex].imageDescription}/>
                     </div>}
             </div>
-            <div className={'d-flex justify-content-center mt-4'}>
-                {answer === 'false' && <Image
-                    src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}
-                    style={{height: 100}}/>}
-                {answer === 'true' &&
-                    <Image
-                        src={'https://i.pinimg.com/originals/fe/01/3f/fe013f692231e4e61376f11c49779440.gif'}
-                        style={{height: 100}}/>}
-            </div>
+            {/*<div className={'d-flex justify-content-center mt-4'}>*/}
+            {/*    {answer === 'false' && <Image*/}
+            {/*        src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}*/}
+            {/*        style={{height: 100}}/>}*/}
+            {/*    {answer === 'true' &&*/}
+            {/*        <Image*/}
+            {/*            src={'https://i.pinimg.com/originals/fe/01/3f/fe013f692231e4e61376f11c49779440.gif'}*/}
+            {/*            style={{height: 100}}/>}*/}
+            {/*</div>*/}
         </form>
     );
 };
