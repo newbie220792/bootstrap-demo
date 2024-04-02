@@ -115,6 +115,16 @@ const VocabulariesCheckComponent = () => {
                 <div className={'row mt-2'}>
                     <label className={'col-1 text-end'}>&#x2022;</label>
                     <label
+                        className={'col-10 text-start fw-bold'}>Part Of
+                        Speech: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].partOfSpeech &&
+                            <span
+                                className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].partOfSpeech)}</span>}
+                    </label>
+
+                </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
                         className={'col-10 text-start fw-bold'}>Phonetic: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].phonetic &&
                         <span className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].phonetic)}</span>}
                         <span className={'ms-1 phonetic'} onClick={handleListenAgain}>🔈</span>
@@ -136,15 +146,6 @@ const VocabulariesCheckComponent = () => {
                         <Image src={vocabularies[vocabularyIndex].imageDescription}/>
                     </div>}
             </div>
-            {/*<div className={'d-flex justify-content-center mt-4'}>*/}
-            {/*    {answer === 'false' && <Image*/}
-            {/*        src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}*/}
-            {/*        style={{height: 100}}/>}*/}
-            {/*    {answer === 'true' &&*/}
-            {/*        <Image*/}
-            {/*            src={'https://i.pinimg.com/originals/fe/01/3f/fe013f692231e4e61376f11c49779440.gif'}*/}
-            {/*            style={{height: 100}}/>}*/}
-            {/*</div>*/}
         </form>
     );
 };
