@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
 import {Image} from "react-bootstrap";
 import {VocabulariesService} from "../../services/vocabulariesService";
+import _ from "lodash";
 
 const VocabulariesCheckComponent = () => {
-    // const vocabularies = ['medicine', 'refrigerator', 'emergency', 'lifeguard']
     const [vocabularies, setVocabularies] = useState([])
     const [vocabularyIndex, setVocabularyIndex] = useState(0)
     const [isStarted, setIsStarted] = useState(true)
@@ -15,37 +15,39 @@ const VocabulariesCheckComponent = () => {
         getValues,
         reset,
         setError,
-        formState: {errors},
+        formState: {errors, submitCount},
     } = useForm({
         reValidateMode: 'onChange',
         defaultValues: {
             vocabulary: ''
         }
     });
-    const handleUpdateVocabulary = (id) => {
-        VocabulariesService.updateVocabularies(id).then();
+    const handleUpdateVocabulary = (id, numberOfSubmit) => {
+        const req = {
+            id: id,
+            times: numberOfSubmit
+        }
+        VocabulariesService.updateVocabularies(req).then();
     }
     const handleSpeak = (vocabulary) => {
-        if (vocabulary) {
+        if (!_.isEmpty(vocabulary)) {
             window.responsiveVoice.speak(vocabulary)
         } else {
             window.responsiveVoice.speak("Vocabulary has not found")
         }
-
-
     }
     const onSubmit = () => {
         const {vocabulary} = getValues()
         if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
-                handleUpdateVocabulary(vocabularyPassed.id);
+                handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
-            setAnswer('true')
+            // setAnswer('true')
             setVocabularyIndex(prevState => ++prevState);
-            reset();
+            reset(null, {keepSubmitCount: false, keepDefaultValues: true});
         } else {
-            setAnswer('false')
+            // setAnswer('false')
             handleSpeak(vocabularies[vocabularyIndex].vocabulary)
             setError('vocabulary', {message: 'Wrong vocabulary. Input again!'})
         }
@@ -75,13 +77,17 @@ const VocabulariesCheckComponent = () => {
         })
     }
     useEffect(() => {
-        // getVocabularies();
+        getVocabularies();
     }, []);
+
+    const formatPhonetic = (phonetic) => {
+        return phonetic.replaceAll('\"', '')
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={'d-flex justify-content-center gap-1 mt-4'}>
-                <button type={"submit"} className={'btn btn-success'}>❮ Previous</button>
+                <button type={"submit"} className={'btn btn-success'}>❮</button>
                 <Controller
                     control={control}
                     name={'vocabulary'}
@@ -94,26 +100,51 @@ const VocabulariesCheckComponent = () => {
                             {...field}
                         />)}
                 />
-                <button type={"submit"} className={'btn btn-success'}>Next ❯</button>
-                <button type={"button"} className={'btn btn-success'} onClick={handleListenAgain}>Listen
-                    again!
-                </button>
+                <button type={"submit"} className={'btn btn-success'}>❯</button>
             </div>
             {errors.vocabulary &&
-                <label className={'text-center w-100 text-danger mt-2'}>{errors.vocabulary.message}</label>}
-            {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
-                <div className={'text-center mt-4'}>
-                    <Image src={vocabularies[vocabularyIndex].imageDescription}
-                           style={{height: 100}}/>
-                </div>}
-            <div className={'d-flex justify-content-center mt-4'}>
-                {answer === 'false' && <Image
-                    src={'https://media.baamboozle.com/uploads/images/670774/6569f919-9802-473f-a7ff-282fae2d90f1.gif'}
-                    style={{height: 100}}/>}
-                {answer === 'true' &&
-                    <Image
-                        src={'https://i.pinimg.com/originals/fe/01/3f/fe013f692231e4e61376f11c49779440.gif'}
-                        style={{height: 100}}/>}
+                <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
+            {submitCount > 3 && <div className={'row mt-2'}>
+                <label className={'col-1 text-end'}>&#x2022;</label>
+                <label
+                    className={'col-10 text-start fw-bold'}>Vocabulary: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vocabulary &&
+                    vocabularies[vocabularyIndex].vocabulary}</label>
+
+            </div>}
+            {vocabularies && vocabularies.length > 0 && vocabularies[vocabularyIndex] && <>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Part Of
+                        Speech: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].partOfSpeech &&
+                            <span
+                                className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].partOfSpeech)}</span>}
+                    </label>
+
+                </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Phonetic: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].phonetic &&
+                        <span className={'fw-bold'}>{formatPhonetic(vocabularies[vocabularyIndex].phonetic)}</span>}
+                        <span className={'ms-1 phonetic'} onClick={handleListenAgain}>🔈</span>
+                    </label>
+
+                </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Vietnamese
+                        Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
+                            vocabularies[vocabularyIndex].vietnameseTranslation}</label>
+
+                </div>
+            </>}
+            <div className={'row mt-2'}>
+                {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
+                    <div className={'text-center mt-4'}>
+                        <Image src={vocabularies[vocabularyIndex].imageDescription}/>
+                    </div>}
             </div>
         </form>
     );

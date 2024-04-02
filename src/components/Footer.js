@@ -4,15 +4,15 @@ import moment from "moment";
 
 const Footer = () => {
     const [currentDate, setCurrentDate] = useState();
-    const [weddingDay, setWeddingDay] = useState('16-07-2023')
+    const [weddingDay, setWeddingDay] = useState('17-06-2023')
     const NumberDays = () => {
-        const weddingTime = moment('16-07-2023', 'DD-MM-YYYY')
+        const weddingTime = moment('17-06-2023', 'DD-MM-YYYY')
         const currentTime = moment()
         const days = currentTime.diff(weddingTime, "days")
         return <label>Days: {days}</label>
     }
     return (
-        <div className='footer'>
+        <div className='footer border-top'>
             <div className='d-flex justify-content-around'>
                 <label>Wedding day: {weddingDay}</label>
                 {NumberDays()}

@@ -3,7 +3,6 @@ import {Form} from 'react-bootstrap'
 import {Controller, useForm} from "react-hook-form";
 import $ from "jquery";
 import {VocabulariesService} from "../../services/vocabulariesService";
-import {fetchPostImage} from "../../common/fetchCommon";
 
 const AddNewVocabularyForm = () => {
     const [vocabularies, setVocabularies] = useState([])
@@ -22,6 +21,14 @@ const AddNewVocabularyForm = () => {
         }
     });
 
+    const handleSpeak = (vocabulary) => {
+        if (vocabulary) {
+            window.responsiveVoice.speak(vocabulary)
+        } else {
+            window.responsiveVoice.speak("Vocabulary has not found")
+        }
+    }
+
     const onTranslate = async (sourceText) => {
         const sourceLang = 'en';
         const targetLang = 'vi';
@@ -30,9 +37,10 @@ const AddNewVocabularyForm = () => {
         return data[0][0][0];
     }
     const onSubmit = async () => {
-        const {vocabulary} = getValues();
+        const {vocabulary, imageDescription} = getValues();
+        handleSpeak(vocabulary)
         const vietnameseTranslation = await onTranslate(vocabulary)
-        const imageDescription = await fetchPostImage(null, null);
+        // const imageDescription = await fetchPostImage(null, null);
         const req = {
             vocabulary: vocabulary,
             vietnameseTranslation: vietnameseTranslation,
@@ -40,24 +48,24 @@ const AddNewVocabularyForm = () => {
         }
         VocabulariesService.addVocabulary(req).then(data => {
             if (data && data.status === 0) {
-                alert(data.message)
+                handleSpeak("Success")
             } else {
-                alert('Add vocabularies fail')
+                handleSpeak(data.message)
             }
-        }).catch(() => alert('Add vocabularies fail'))
+        }).catch(() => handleSpeak('Add vocabularies fail'))
         reset()
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={'w-100'}>
-            <div className={'border-start mt-4 d-flex flex-column align-items-center gap-2'}>
+            <div className={'mt-4 d-flex flex-column align-items-center gap-2'}>
                 <label className={'text-center fw-bold'}>Add new vocabulary :</label>
                 <Form.Label column={true}>Từ mới:</Form.Label>
                 <Controller
                     control={control}
                     name={'vocabulary'}
                     rules={{
-                        // required: true,
+                        required: true,
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
@@ -70,7 +78,7 @@ const AddNewVocabularyForm = () => {
                     control={control}
                     name={'imageDescription'}
                     rules={{
-                        // required: true,
+                        required: true,
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
