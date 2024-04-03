@@ -25,14 +25,21 @@ const TodoListComponent = () => {
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     vocabulary:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.vocabulary ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div
+                    className={`col-6 mt-2 ${lessionStatus.vocabulary ? 'progress-stacked progress-bar' : ''}`}>1/40
+                </div>
+                <div className={'col-1'}>
+                    {/*<button className={'btn btn-success text-start btn-sm'} type={'button'}*/}
+                    {/*        onClick={() => handleDoneLession('vocabulary')}> Ok*/}
+                    {/*</button>*/}
+                </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     duolingo:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.duolingo ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div
+                    className={`col-6 mt-2 ${lessionStatus.duolingo ? 'progress-stacked progress-bar' : ''}`}>1/40
+                </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'} type={'button'}
                             onClick={() => handleDoneLession('duolingo')}> Ok
@@ -42,8 +49,9 @@ const TodoListComponent = () => {
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     grammar:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.grammar ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div className={`col-6 mt-2 ${lessionStatus.grammar ? 'progress-stacked progress-bar' : ''}`}>
+                    1/40
+                </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'}
                             onClick={() => handleDoneLession('grammar')}> Ok
@@ -53,9 +61,10 @@ const TodoListComponent = () => {
             <div className={'w-100 row ms-1 mt-3'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     speaking:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.speaking ? 'border-bottom border-info' : ''}`}>0/1
-                    lession</Form.Label>
+                <div
+                    className={`col-6 mt-2 ${lessionStatus.speaking ? 'progress-stacked progress-bar' : ''}`}>0/1
+                    lession
+                </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'}
                             onClick={() => handleDoneLession('speaking')}> Ok

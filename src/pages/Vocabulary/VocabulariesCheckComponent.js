@@ -38,6 +38,11 @@ const VocabulariesCheckComponent = () => {
     }
     const onSubmit = () => {
         const {vocabulary} = getValues()
+        if (!vocabularies || !vocabularies[vocabularyIndex] || !vocabularies[vocabularyIndex].vocabulary) {
+            handleSpeak(vocabulary)
+            setError('vocabulary', {message: 'Wrong vocabulary. Input again!'})
+            return;
+        }
         if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
@@ -77,7 +82,7 @@ const VocabulariesCheckComponent = () => {
         })
     }
     useEffect(() => {
-        getVocabularies();
+        // getVocabularies();
     }, []);
 
     const formatPhonetic = (phonetic) => {
@@ -92,18 +97,18 @@ const VocabulariesCheckComponent = () => {
                     control={control}
                     name={'vocabulary'}
                     rules={{
-                        required: {value: true, message: 'Nhap tu vao'},
+                        required: {value: true, message: 'Please input vocabulary'},
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
-                            className={`form-control input-group-sm w-25 ${errors.vocabulary ? 'is-invalid' : ''}`}
+                            className={`form-control input-group-sm w-50 ${errors.vocabulary ? 'is-invalid' : ''}`}
                             {...field}
                         />)}
                 />
                 <button type={"submit"} className={'btn btn-success'}>❯</button>
             </div>
             {errors.vocabulary &&
-                <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
+                <label className={'text-center w-100 text-danger mt-2'}>{errors.vocabulary.message}</label>}
             {submitCount > 3 && <div className={'row mt-2'}>
                 <label className={'col-1 text-end'}>&#x2022;</label>
                 <label
