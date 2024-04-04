@@ -8,8 +8,6 @@ export const VocabularyComponent = () => {
             <div className={'col-md-6 col-sm-12'}>
                 <VocabulariesCheckComponent/>
             </div>
-            {/*<div className={'col-1 border-start'}>*/}
-            {/*</div>*/}
             <div className={'col-md-6 col-sm-12'}>
                 <AddNewVocabularyForm/>
                 <TodoListComponent/>

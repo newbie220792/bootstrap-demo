@@ -1,13 +1,13 @@
 import Footer from '../components/Footer';
-import { Header } from '../components/Header';
+import {Header} from '../components/Header';
 
-const AuthLayout = ({ children, ...props }) => {
+const AuthLayout = ({children, ...props}) => {
     return (
-        <div className='main-layout'>
-            <Header />
+        <>
+            <Header/>
             {children}
-            <Footer />
-        </div>
+            <Footer/>
+        </>
     );
 };
 
