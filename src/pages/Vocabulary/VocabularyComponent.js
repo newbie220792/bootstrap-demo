@@ -4,13 +4,11 @@ import TodoListComponent from "./TodoListComponent";
 
 export const VocabularyComponent = () => {
     return (
-        <div className={'row w-100'}>
-            <div className={'col-7'}>
+        <div className={'row me-1 ms-1'}>
+            <div className={'col-md-6 col-sm-12'}>
                 <VocabulariesCheckComponent/>
             </div>
-            <div className={'col-1 border-start'}>
-            </div>
-            <div className={'col-4'}>
+            <div className={'col-md-6 col-sm-12'}>
                 <AddNewVocabularyForm/>
                 <TodoListComponent/>
             </div>
