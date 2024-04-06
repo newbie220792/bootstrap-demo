@@ -4,5 +4,7 @@ export const VocabulariesService = {
     getList: () => fetchGet('/vocabularies/list', null),
     addVocabularies: (vocabularies) => fetchPost('/vocabularies/add-all', vocabularies),
     addVocabulary: (vocabularies) => fetchPost('/vocabularies/add', vocabularies),
-    updateVocabularies: (data) => fetchGet('/vocabularies/update', data)
+    updateVocabularies: (data) => fetchGet('/vocabularies/update', data),
+    getReport: () => fetchGet('/vocabularies/report', null),
+    updateReportToday: (lesson) => fetchGet('/vocabularies/report/lesson/' + lesson, null)
 }

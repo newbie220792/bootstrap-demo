@@ -1,0 +1,5 @@
+.table {
+    --bs-table-color: none;
+    --bs-table-bg: none;
+    width: auto;
+}

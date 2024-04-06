@@ -1,24 +1,33 @@
 import React, {useState} from 'react';
 import {Form} from 'react-bootstrap'
+import {VocabulariesService} from "../../services/vocabulariesService";
 
 const TodoListComponent = () => {
-    const [lessionStatus, setLessionStatus] = useState({})
-    const handleDoneLession = (code) => {
+    const [lessonStatus, setlessonStatus] = useState({})
+
+    const updateLesson = (lesson) => {
+        VocabulariesService.updateReportToday(lesson).then();
+    }
+    const handleDoneLesson = (code) => {
         switch (code) {
             case 'vocabulary':
-                setLessionStatus(prevState => ({...prevState, vocabulary: true}))
+                setlessonStatus(prevState => ({...prevState, vocabulary: true}))
                 break;
             case 'duolingo':
-                setLessionStatus(prevState => ({...prevState, duolingo: true}))
+                setlessonStatus(prevState => ({...prevState, duolingo: true}))
+                updateLesson('duolingo')
                 break;
             case 'grammar':
-                setLessionStatus(prevState => ({...prevState, grammar: true}))
+                setlessonStatus(prevState => ({...prevState, grammar: true}))
+                updateLesson('grammar')
                 break;
             case 'speaking':
-                setLessionStatus(prevState => ({...prevState, speaking: true}))
+                setlessonStatus(prevState => ({...prevState, speaking: true}))
+                updateLesson('speaking')
                 break;
         }
     }
+
     return (
         <div className={'border-top mt-4 w-100'}>
             <label><span className={'me-1'}>&#x2022;</span>To do list:</label>
@@ -26,11 +35,11 @@ const TodoListComponent = () => {
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     vocabulary:</Form.Label>
                 <div
-                    className={`col-6 mt-2 ${lessionStatus.vocabulary ? 'progress-stacked progress-bar' : ''}`}>1/40
+                    className={`col-6 mt-2 ${lessonStatus.vocabulary ? 'progress-stacked progress-bar' : ''}`}>1/40
                 </div>
                 <div className={'col-1'}>
                     {/*<button className={'btn btn-success text-start btn-sm'} type={'button'}*/}
-                    {/*        onClick={() => handleDoneLession('vocabulary')}> Ok*/}
+                    {/*        onClick={() => handleDonelesson('vocabulary')}> Ok*/}
                     {/*</button>*/}
                 </div>
             </div>
@@ -38,23 +47,23 @@ const TodoListComponent = () => {
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     duolingo:</Form.Label>
                 <div
-                    className={`col-6 mt-2 ${lessionStatus.duolingo ? 'progress-stacked progress-bar' : ''}`}>1/40
+                    className={`col-6 mt-2 ${lessonStatus.duolingo ? 'progress-stacked progress-bar' : ''}`}>1/40
                 </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'} type={'button'}
-                            onClick={() => handleDoneLession('duolingo')}> Ok
+                            onClick={() => handleDoneLesson('duolingo')}> Ok
                     </button>
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     grammar:</Form.Label>
-                <div className={`col-6 mt-2 ${lessionStatus.grammar ? 'progress-stacked progress-bar' : ''}`}>
+                <div className={`col-6 mt-2 ${lessonStatus.grammar ? 'progress-stacked progress-bar' : ''}`}>
                     1/40
                 </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'}
-                            onClick={() => handleDoneLession('grammar')}> Ok
+                            onClick={() => handleDoneLesson('grammar')}> Ok
                     </button>
                 </div>
             </div>
@@ -62,12 +71,12 @@ const TodoListComponent = () => {
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     speaking:</Form.Label>
                 <div
-                    className={`col-6 mt-2 ${lessionStatus.speaking ? 'progress-stacked progress-bar' : ''}`}>0/1
-                    lession
+                    className={`col-6 mt-2 ${lessonStatus.speaking ? 'progress-stacked progress-bar' : ''}`}>0/1
+                    lesson
                 </div>
                 <div className={'col-1'}>
                     <button className={'btn btn-success text-start btn-sm'}
-                            onClick={() => handleDoneLession('speaking')}> Ok
+                            onClick={() => handleDoneLesson('speaking')}> Ok
                     </button>
                 </div>
             </div>
