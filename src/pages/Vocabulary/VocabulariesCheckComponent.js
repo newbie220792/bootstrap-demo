@@ -82,7 +82,7 @@ const VocabulariesCheckComponent = () => {
         })
     }
     useEffect(() => {
-        // getVocabularies();
+        getVocabularies();
     }, []);
 
     const formatPhonetic = (phonetic) => {
