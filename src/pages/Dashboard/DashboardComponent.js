@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DashboardComponent = (props) => {
-    return <></>
+    return <><h1>This a Dashboard page</h1></>
 };
 
 export default DashboardComponent;

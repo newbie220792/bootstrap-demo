@@ -1,4 +1,3 @@
-// @flow
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import React, {useMemo} from "react";
 import {useQuery} from "@tanstack/react-query";
@@ -52,20 +51,20 @@ const ReportComponent = () => {
             columnHelper.accessor('isLearningDuolingo', {
                 id: 'isLearningDuolingo',
                 header: 'Learning Duolingo',
-                cell: ({getValue}) => getValue() === 0 ? <Image style={{width: 20}} src={x}/> :
-                    <Image style={{width: 20}} src={ok}/>
+                cell: ({getValue}) => getValue() === 1 ? <Image style={{width: 20}} src={ok}/> :
+                    <Image style={{width: 20}} src={x}/>
             }),
             columnHelper.accessor('isLearningGrammar', {
                 id: 'isLearningGrammar',
                 header: 'Learning Grammar',
-                cell: ({getValue}) => getValue() === 0 ? <Image style={{width: 20}} src={x}/> :
-                    <Image style={{width: 20}} src={ok}/>
+                cell: ({getValue}) => getValue() === 1 ? <Image style={{width: 20}} src={ok}/> :
+                    <Image style={{width: 20}} src={x}/>
             }),
             columnHelper.accessor('isPracticeSpeaking', {
                 id: 'isPracticeSpeaking',
                 header: 'Practice Speaking',
-                cell: ({getValue}) => getValue() === 0 ? <Image style={{width: 20}} src={x}/> :
-                    <Image style={{width: 20}} src={ok}/>
+                cell: ({getValue}) => getValue() === 1 ? <Image style={{width: 20}} src={ok}/> :
+                    <Image style={{width: 20}} src={x}/>
             }),
         ];
     }, [data]);
@@ -80,6 +79,7 @@ const ReportComponent = () => {
 
 
     return <div className='p-2'>
+        <h2>Report table</h2>
         <table className='table-bordered table-responsive table'>
             <thead>
             {table.getHeaderGroups().map((headerGroup) => (

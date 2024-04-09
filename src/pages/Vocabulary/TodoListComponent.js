@@ -33,9 +33,9 @@ const TodoListComponent = () => {
             if (data.status === 0) {
                 setReportToday(data.data)
                 setLessonStatus({
-                    duolingo: data.isLearningDuolingo === 1,
-                    grammar: data.isLearningGrammar === 1,
-                    speaking: data.isPracticeSpeaking === 1,
+                    duolingo: data.data.isLearningDuolingo === 1,
+                    grammar: data.data.isLearningGrammar === 1,
+                    speaking: data.data.isPracticeSpeaking === 1,
                 })
             }
         })
@@ -62,39 +62,39 @@ const TodoListComponent = () => {
                     duolingo:</Form.Label>
                 <div
                     className={`col-6 mt-2 ${lessonStatus.duolingo ? 'progress-stacked progress-bar' : ''}`}>
-                    {reportToday.isLearningDuolingo}/1
+                    {reportToday.isLearningDuolingo || 0}/1
                 </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'} type={'button'}
-                            disabled={reportToday.isLearningDuolingo === 1}
-                            onClick={() => handleDoneLesson('duolingo')}> Ok
-                    </button>
+                    {!lessonStatus.duolingo && <button className={'btn btn-success text-start btn-sm'} type={'button'}
+                                                       disabled={reportToday.isLearningDuolingo === 1}
+                                                       onClick={() => handleDoneLesson('duolingo')}> Ok
+                    </button>}
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     grammar:</Form.Label>
                 <div className={`col-6 mt-2 ${lessonStatus.grammar ? 'progress-stacked progress-bar' : ''}`}>
-                    {reportToday.isLearningGrammar}/1
+                    {reportToday.isLearningGrammar || 0}/1
                 </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'}
-                            disabled={reportToday.isLearningGrammar === 1}
-                            onClick={() => handleDoneLesson('grammar')}> Ok
-                    </button>
+                    {!lessonStatus.grammar && <button className={'btn btn-success text-start btn-sm'}
+                                                      disabled={reportToday.isLearningGrammar === 1}
+                                                      onClick={() => handleDoneLesson('grammar')}> Ok
+                    </button>}
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-3'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     speaking:</Form.Label>
                 <div className={`col-6 mt-2 ${lessonStatus.speaking ? 'progress-stacked progress-bar' : ''}`}>
-                    {reportToday.isPracticeSpeaking}/1
+                    {reportToday.isPracticeSpeaking || 0}/1
                 </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'}
-                            disabled={reportToday.isPracticeSpeaking === 1}
-                            onClick={() => handleDoneLesson('speaking')}> Ok
-                    </button>
+                    {!lessonStatus.speaking && <button className={'btn btn-success text-start btn-sm'}
+                                                       disabled={reportToday.isPracticeSpeaking === 1}
+                                                       onClick={() => handleDoneLesson('speaking')}> Ok
+                    </button>}
                 </div>
             </div>
         </div>
