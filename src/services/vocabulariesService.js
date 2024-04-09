@@ -6,5 +6,6 @@ export const VocabulariesService = {
     addVocabulary: (vocabularies) => fetchPost('/vocabularies/add', vocabularies),
     updateVocabularies: (data) => fetchGet('/vocabularies/update', data),
     getReport: () => fetchGet('/vocabularies/report', null),
-    updateReportToday: (lesson) => fetchGet('/vocabularies/report/lesson/' + lesson, null)
+    updateReportToday: (lesson) => fetchGet('/vocabularies/report/lesson/' + lesson, null),
+    getReportToday: () => fetchGet('/vocabularies/report/today', null)
 }
