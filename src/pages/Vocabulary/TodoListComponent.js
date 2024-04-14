@@ -13,6 +13,7 @@ const TodoListComponent = () => {
         switch (code) {
             case 'vocabulary':
                 setLessonStatus(prevState => ({...prevState, vocabulary: true}))
+                updateLesson('vocabulary')
                 break;
             case 'duolingo':
                 setLessonStatus(prevState => ({...prevState, duolingo: true}))
@@ -52,9 +53,13 @@ const TodoListComponent = () => {
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     vocabulary:</Form.Label>
                 <div
-                    className={`col-6 mt-2 ${lessonStatus.vocabulary ? 'progress-stacked progress-bar' : ''}`}>1/1
+                    className={`col-6 mt-2 ${lessonStatus.vocabulary ? 'progress-stacked progress-bar' : ''}`}>
+                    {reportToday.isLearningVocabulary || 0}/1
                 </div>
                 <div className={'col-1'}>
+                    {!lessonStatus.vocabulary && <button className={'btn btn-success text-start btn-sm'} type={'button'}
+                                                         onClick={() => handleDoneLesson('vocabulary')}> Ok
+                    </button>}
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
@@ -66,7 +71,6 @@ const TodoListComponent = () => {
                 </div>
                 <div className={'col-1'}>
                     {!lessonStatus.duolingo && <button className={'btn btn-success text-start btn-sm'} type={'button'}
-                                                       disabled={reportToday.isLearningDuolingo === 1}
                                                        onClick={() => handleDoneLesson('duolingo')}> Ok
                     </button>}
                 </div>
@@ -79,7 +83,6 @@ const TodoListComponent = () => {
                 </div>
                 <div className={'col-1'}>
                     {!lessonStatus.grammar && <button className={'btn btn-success text-start btn-sm'}
-                                                      disabled={reportToday.isLearningGrammar === 1}
                                                       onClick={() => handleDoneLesson('grammar')}> Ok
                     </button>}
                 </div>
@@ -92,7 +95,6 @@ const TodoListComponent = () => {
                 </div>
                 <div className={'col-1'}>
                     {!lessonStatus.speaking && <button className={'btn btn-success text-start btn-sm'}
-                                                       disabled={reportToday.isPracticeSpeaking === 1}
                                                        onClick={() => handleDoneLesson('speaking')}> Ok
                     </button>}
                 </div>

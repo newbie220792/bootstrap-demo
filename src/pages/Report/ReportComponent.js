@@ -5,6 +5,7 @@ import {VocabulariesService} from "../../services/vocabulariesService";
 import x from "../../assets/x-icon-new.png"
 import ok from "../../assets/Ok-icon.png"
 import {Image} from "react-bootstrap";
+import moment from "moment";
 
 const ReportComponent = () => {
 
@@ -17,6 +18,10 @@ const ReportComponent = () => {
             }
         })
     }
+
+    const formatDate = (date) => {
+        return moment(new Date(date)).format('DD/MM/yyyy')
+    }
     const {isPending, error, data} = useQuery({
         queryKey: ['repoData'],
         queryFn: () => getReport(),
@@ -25,13 +30,15 @@ const ReportComponent = () => {
     const columnHelper = createColumnHelper();
     const columns = useMemo(() => {
         return [
-            columnHelper.accessor('id', {
-                id: 'id',
-                header: 'Id',
+            columnHelper.accessor('index', {
+                id: 'index',
+                header: 'Index',
+                cell: ({row}) => row.index++
             }),
             columnHelper.accessor('challengeDate', {
                 id: 'challengeDate',
                 header: 'Challenge Date',
+                cell: ({getValue}) => formatDate(getValue())
             }),
             columnHelper.accessor('totalVocabulary', {
                 id: 'totalVocabulary',
