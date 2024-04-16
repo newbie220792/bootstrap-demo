@@ -1,17 +1,27 @@
-import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import React, {useMemo} from "react";
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    useReactTable
+} from "@tanstack/react-table";
+import React, {useMemo, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {VocabulariesService} from "../../services/vocabulariesService";
 import x from "../../assets/x-icon-new.png"
 import ok from "../../assets/Ok-icon.png"
 import {Image} from "react-bootstrap";
 import moment from "moment";
+import PageNumberComponent from "./PageNumberComponent";
 
 const ReportComponent = () => {
-
+    const [{pageIndex, pageSize}, setPagination] = useState({pageIndex: 0, pageSize: 10});
+    const pagination = {pageIndex, pageSize};
+    const [totalRecords, setTotalRecords] = useState(0);
     const getReport = () => {
         return VocabulariesService.getReport().then(data => {
             if (data.status === 0) {
+                setTotalRecords(data.data.length)
                 return data.data;
             } else {
                 return []
@@ -80,8 +90,14 @@ const ReportComponent = () => {
     const table = useReactTable({
         data: data || [],
         columns,
+        state: {
+            pagination,
+        },
+        pageCount: Math.ceil(totalRecords / pageSize) || -1,
         getCoreRowModel: getCoreRowModel(),
         meta: {},
+        onPaginationChange: setPagination,
+        getPaginationRowModel: getPaginationRowModel(),
     });
 
 
@@ -120,6 +136,9 @@ const ReportComponent = () => {
                 ))}
             </tbody>
         </table>
+        <div className={'table-pagination'}>
+            <PageNumberComponent tableInstance={table} pageIndex={pageIndex}/>
+        </div>
     </div>;
 };
 export default ReportComponent;
