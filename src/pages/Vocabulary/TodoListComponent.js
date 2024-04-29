@@ -37,6 +37,7 @@ const TodoListComponent = () => {
                     duolingo: data.data.isLearningDuolingo === 1,
                     grammar: data.data.isLearningGrammar === 1,
                     speaking: data.data.isPracticeSpeaking === 1,
+                    vocabulary: data.data.isLearningVocabulary === 1
                 })
             }
         })

@@ -77,6 +77,12 @@ const ReportComponent = () => {
                 cell: ({getValue}) => getValue() === 1 ? <Image style={{width: 20}} src={ok}/> :
                     <Image style={{width: 20}} src={x}/>
             }),
+            columnHelper.accessor('isLearningVocabulary', {
+                id: 'isLearningVocabulary',
+                header: 'Learning Vocabulary',
+                cell: ({getValue}) => getValue() === 1 ? <Image style={{width: 20}} src={ok}/> :
+                    <Image style={{width: 20}} src={x}/>
+            }),
             columnHelper.accessor('isPracticeSpeaking', {
                 id: 'isPracticeSpeaking',
                 header: 'Practice Speaking',
