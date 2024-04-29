@@ -7,8 +7,6 @@ import _ from 'lodash';
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([]);
     const [vocabularyIndex, setVocabularyIndex] = useState(0);
-    const [isStarted, setIsStarted] = useState(true);
-    const [answer, setAnswer] = useState('');
     const {
         handleSubmit,
         control,
@@ -29,6 +27,7 @@ const VocabulariesCheckComponent = () => {
         };
         VocabulariesService.updateVocabularies(req).then();
     };
+
     const handleSpeak = (vocabulary) => {
         if (!_.isEmpty(vocabulary)) {
             window.responsiveVoice.speak(vocabulary);
@@ -48,11 +47,9 @@ const VocabulariesCheckComponent = () => {
             if (vocabularyPassed && vocabularyPassed.id) {
                 handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
-            // setAnswer('true')
             setVocabularyIndex(prevState => ++prevState);
             reset(null, {keepSubmitCount: false, keepDefaultValues: true});
         } else {
-            // setAnswer('false')
             handleSpeak(vocabularies[vocabularyIndex].vocabulary);
             setError('vocabulary', {message: 'Wrong vocabulary. Input again!'});
         }
@@ -62,14 +59,14 @@ const VocabulariesCheckComponent = () => {
     };
 
     useEffect(() => {
-        if (isStarted && vocabularies[vocabularyIndex]) {
+        if (vocabularies[vocabularyIndex]) {
             handleSpeak(vocabularies[vocabularyIndex].vocabulary);
         }
         if (vocabularyIndex === vocabularies.length && vocabularyIndex > 0) {
             alert('You have been finish your course today');
             handleSpeak('You have been finish your course today');
         }
-    }, [vocabularyIndex, isStarted, vocabularies]);
+    }, [vocabularyIndex, vocabularies]);
 
     const getVocabularies = () => {
         VocabulariesService.getList().then(data => {
@@ -91,8 +88,7 @@ const VocabulariesCheckComponent = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={'d-flex justify-content-center gap-1 mt-4'}>
-                <button type={'submit'} className={'btn btn-success'}>❮</button>
+            <div className={'d-flex justify-content-center gap-1 mt-md-5 pt-5'}>
                 <Controller
                     control={control}
                     name={'vocabulary'}
@@ -101,7 +97,7 @@ const VocabulariesCheckComponent = () => {
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
-                            className={`form-control input-group-sm w-50 ${errors.vocabulary ? 'is-invalid' : ''}`}
+                            className={`form-control input-group-sm w-75 ${errors.vocabulary ? 'is-invalid' : ''}`}
                             {...field}
                         />)}
                 />

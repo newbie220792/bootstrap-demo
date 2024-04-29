@@ -7,7 +7,7 @@ const TodoListComponent = () => {
     const [lessonStatus, setLessonStatus] = useState({});
 
     const updateLesson = (lesson) => {
-        // VocabulariesService.updateReportToday(lesson).then();
+        VocabulariesService.updateReportToday(lesson).then();
     };
     const handleDoneLesson = (code) => {
         switch (code) {
@@ -56,8 +56,8 @@ const TodoListComponent = () => {
                 <div
                     className={`col-6 mt-2`}>
                     {lessonStatus.vocabulary &&
-                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary : 0}
-                                     label={lessonStatus.vocabulary ? `${lessonStatus.totalVocabulary}/100` : '0/100'}/>}
+                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary || 50 : 0}
+                                     label={lessonStatus.vocabulary ? `${lessonStatus.totalVocabulary || 0}/100` : '0/100'}/>}
                 </div>
                 <div className={'col-1'}>
                     {!lessonStatus.vocabulary && <button className={'btn btn-success text-start btn-sm'} type={'button'}
