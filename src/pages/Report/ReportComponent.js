@@ -4,15 +4,15 @@ import {
     getCoreRowModel,
     getPaginationRowModel,
     useReactTable
-} from "@tanstack/react-table";
-import React, {useMemo, useState} from "react";
-import {useQuery} from "@tanstack/react-query";
-import {VocabulariesService} from "../../services/vocabulariesService";
-import x from "../../assets/x-icon-new.png"
-import ok from "../../assets/Ok-icon.png"
-import {Image} from "react-bootstrap";
-import moment from "moment";
-import PageNumberComponent from "./PageNumberComponent";
+} from '@tanstack/react-table';
+import React, {useMemo, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {VocabulariesService} from '../../services/vocabulariesService';
+import x from '../../assets/x-icon-new.png';
+import ok from '../../assets/Ok-icon.png';
+import {Image} from 'react-bootstrap';
+import moment from 'moment';
+import PageNumberComponent from './PageNumberComponent';
 
 const ReportComponent = () => {
     const [{pageIndex, pageSize}, setPagination] = useState({pageIndex: 0, pageSize: 10});
@@ -21,22 +21,22 @@ const ReportComponent = () => {
     const getReport = () => {
         return VocabulariesService.getReport().then(data => {
             if (data.status === 0) {
-                setTotalRecords(data.data.length)
+                setTotalRecords(data.data.length);
                 return data.data;
             } else {
-                return []
+                return [];
             }
-        })
-    }
+        });
+    };
 
     const formatDate = (date) => {
-        return moment(new Date(date)).format('DD/MM/yyyy')
-    }
+        return moment(new Date(date)).format('DD/MM/yyyy');
+    };
     const {isPending, error, data} = useQuery({
         queryKey: ['repoData'],
         queryFn: () => getReport(),
         refetchOnMount: 'always'
-    })
+    });
     const columnHelper = createColumnHelper();
     const columns = useMemo(() => {
         return [
@@ -106,15 +106,13 @@ const ReportComponent = () => {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-
-    return <div className='p-2'>
-        <h2>Report table</h2>
-        <table className='table-bordered table-responsive table'>
+    return <div className="p-2">
+        <table className="table-bordered table-responsive table">
             <thead>
             {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                        <th key={header.id} className='text-center '>
+                        <th key={header.id} className="text-center ">
                             {header.isPlaceholder
                                 ? null
                                 : flexRender(
