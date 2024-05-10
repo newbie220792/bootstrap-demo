@@ -70,7 +70,7 @@ const VocabulariesCheckComponent = () => {
 
     const getVocabularies = () => {
         VocabulariesService.getList().then(data => {
-            if (data && data.status === 0) {
+            if (data && data.status === 200) {
                 setVocabularies(data.data);
             } else {
                 alert('You have been finish your course today');
