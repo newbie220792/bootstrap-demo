@@ -42,7 +42,7 @@ const VocabulariesCheckComponent = () => {
             setError('vocabulary', {message: 'Wrong vocabulary. Input again!'});
             return;
         }
-        if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
+        if (vocabulary.toLowerCase() === vocabularies[vocabularyIndex].vocabulary.toLowerCase()) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
                 handleUpdateVocabulary(vocabularyPassed.id, submitCount);

@@ -43,7 +43,7 @@ const ReportComponent = () => {
             columnHelper.accessor('index', {
                 id: 'index',
                 header: 'Index',
-                cell: ({row}) => row.index++
+                cell: ({row}) => row.index + 1
             }),
             columnHelper.accessor('challengeDate', {
                 id: 'challengeDate',
