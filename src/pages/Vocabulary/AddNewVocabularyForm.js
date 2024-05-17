@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Form} from 'react-bootstrap'
-import {Controller, useForm} from "react-hook-form";
-import $ from "jquery";
-import {VocabulariesService} from "../../services/vocabulariesService";
+import {Form} from 'react-bootstrap';
+import {Controller, useForm} from 'react-hook-form';
+import $ from 'jquery';
+import {VocabulariesService} from '../../services/vocabulariesService';
 
 const AddNewVocabularyForm = () => {
-    const [vocabularies, setVocabularies] = useState([])
+    const [vocabularies, setVocabularies] = useState([]);
     const {
         handleSubmit,
         control,
@@ -23,37 +23,37 @@ const AddNewVocabularyForm = () => {
 
     const handleSpeak = (vocabulary) => {
         if (vocabulary) {
-            window.responsiveVoice.speak(vocabulary)
+            window.responsiveVoice.speak(vocabulary);
         } else {
-            window.responsiveVoice.speak("Vocabulary has not found")
+            window.responsiveVoice.speak('Vocabulary has not found');
         }
-    }
+    };
 
     const onTranslate = async (sourceText) => {
         const sourceLang = 'en';
         const targetLang = 'vi';
-        const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+        const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + sourceLang + '&tl=' + targetLang + '&dt=t&q=' + encodeURI(sourceText);
         const data = await $.getJSON(url);
         return data[0][0][0];
-    }
+    };
     const onSubmit = async () => {
         const {vocabulary, imageDescription} = getValues();
-        handleSpeak(vocabulary)
-        const vietnameseTranslation = await onTranslate(vocabulary)
+        handleSpeak(vocabulary);
+        const vietnameseTranslation = await onTranslate(vocabulary);
         // const imageDescription = await fetchPostImage(null, null);
         const req = {
             vocabulary: vocabulary,
             vietnameseTranslation: vietnameseTranslation,
             imageDescription: imageDescription
-        }
+        };
         VocabulariesService.addVocabulary(req).then(data => {
-            if (data && data.status === 0) {
-                handleSpeak("Success")
+            if (data && data.status === 200) {
+                handleSpeak('Success');
             } else {
-                handleSpeak(data.message)
+                handleSpeak(data.message);
             }
-        }).catch(() => handleSpeak('Add vocabularies fail'))
-        reset()
+        }).catch(() => handleSpeak('Add vocabularies fail'));
+        reset();
     };
 
     return (
@@ -63,7 +63,7 @@ const AddNewVocabularyForm = () => {
                 <Form.Label column={true}>Từ mới:</Form.Label>
                 <Controller
                     control={control}
-                    name={'vocabulary'}
+                    name="vocabulary"
                     rules={{
                         required: true,
                     }}
@@ -76,7 +76,7 @@ const AddNewVocabularyForm = () => {
                 <label>Ảnh minh họa:</label>
                 <Controller
                     control={control}
-                    name={'imageDescription'}
+                    name="imageDescription"
                     rules={{
                         required: true,
                     }}
