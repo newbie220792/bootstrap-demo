@@ -1,0 +1,19 @@
+.img {
+    width: 30px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.sign-up {
+    cursor: pointer;
+}
+
+.sign-up:hover {
+    text-decoration: underline;
+    /*text-transform: bold;*/
+    color: #352880;
+}
+
+/*.login-form {*/
+/*    background: linear-gradient(-135deg, #c850c0, #4158d0);*/
+/*}*/

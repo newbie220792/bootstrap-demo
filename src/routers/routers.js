@@ -6,7 +6,8 @@ import {PhotosComponent} from '../pages/Photos/PhotosComponent';
 import ProfileComponent from '../pages/Profile/ProfileComponent';
 import ReportComponent from '../pages/Report/ReportComponent';
 import {VideoComponent} from '../pages/Videos/VideoComponent';
-import {VocabularyComponent} from "../pages/Vocabulary/VocabularyComponent";
+import {VocabularyComponent} from '../pages/Vocabulary/VocabularyComponent';
+import LoginComponent from '../pages/Login/LoginComponent';
 
 export const routers = [
     {
@@ -42,6 +43,12 @@ export const routers = [
     {
         path: '/*',
         component: NotFound,
+        layout: EmptyLayout,
+        role: ['all'],
+    },
+    {
+        path: '/login',
+        component: LoginComponent,
         layout: EmptyLayout,
         role: ['all'],
     },

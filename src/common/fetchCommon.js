@@ -4,61 +4,41 @@ export const fetchGet = async (url, data) => {
     }
     const res = await fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
         method: 'GET',
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        // body: JSON.stringify({}),
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Bearer ': localStorage.getItem('access_token'),
         }
-    })
-    if (res.ok) {
-        return res.json()
+    });
+    if (res.status === 401) {
+        //todo: navigate to login page
+        localStorage.removeItem('access_token');
+    } else if (res.status === 200) {
+        return res.json();
     } else {
-        throw new Error()
+        throw new Error();
     }
-}
+};
 
 export const fetchPost = async (url, data) => {
     const res = await fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
         method: 'POST',
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         body: JSON.stringify(data),
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Bearer ': localStorage.getItem('access_token'),
         }
-    })
-    if (res.ok) {
-        return res.json()
+    });
+    if (res.status === 401) {
+        //todo: navigate to login page
+        localStorage.removeItem('access_token');
+    } else if (res.status === 200) {
+        return res.json();
     } else {
-        throw new Error()
+        throw new Error();
     }
-}
-
-export const fetchPostImage = async (url, data) => {
-    const res = await fetch('https://global-image-search-with-keywords.p.rapidapi.com/v1/google_Image_Search/', {
-        method: 'POST',
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
-            'content-type': 'application/json',
-            'X-RapidAPI-Key': '3c0615783cmsh481038da7100fd8p15fd56jsnaa3308db5f93',
-            'X-RapidAPI-Host': 'global-image-search-with-keywords.p.rapidapi.com'
-        },
-        body: JSON.stringify({
-            keywords: 'compare',
-            count: 1
-        })
-    })
-    try {
-        const result = await res.text();
-        console.log(result);
-    } catch (error) {
-        console.error(error);
-    }
-    // if (res.ok) {
-    //     return res.json()
-    // } else {
-    //     throw new Error()
-    // }
-}
+};
