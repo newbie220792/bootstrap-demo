@@ -3,6 +3,7 @@ import {Form} from 'react-bootstrap';
 import {Controller, useForm} from 'react-hook-form';
 import $ from 'jquery';
 import {VocabulariesService} from '../../services/vocabulariesService';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const AddNewVocabularyForm = () => {
     const [vocabularies, setVocabularies] = useState([]);
@@ -47,7 +48,7 @@ const AddNewVocabularyForm = () => {
             imageDescription: imageDescription
         };
         VocabulariesService.addVocabulary(req).then(data => {
-            if (data && data.status === 200) {
+            if (data && data.status === HttpStatus.SUCCESS) {
                 handleSpeak('Success');
             } else {
                 handleSpeak(data.message);

@@ -13,6 +13,7 @@ import ok from '../../assets/Ok-icon.png';
 import {Image} from 'react-bootstrap';
 import moment from 'moment';
 import PageNumberComponent from './PageNumberComponent';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const ReportComponent = () => {
     const [{pageIndex, pageSize}, setPagination] = useState({pageIndex: 0, pageSize: 10});
@@ -20,7 +21,7 @@ const ReportComponent = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const getReport = () => {
         return VocabulariesService.getReport().then(data => {
-            if (data.status === 0) {
+            if (data.status === HttpStatus.SUCCESS) {
                 setTotalRecords(data.data.length);
                 return data.data;
             } else {
@@ -106,7 +107,7 @@ const ReportComponent = () => {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-    return <div className="p-2">
+    return <div className="mt-4 d-flex flex-row justify-content-center align-items-center">
         <table className="table-bordered table-responsive table">
             <thead>
             {table.getHeaderGroups().map((headerGroup) => (

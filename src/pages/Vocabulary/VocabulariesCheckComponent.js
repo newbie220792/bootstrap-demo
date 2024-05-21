@@ -3,6 +3,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {Image} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import _ from 'lodash';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([]);
@@ -70,7 +71,7 @@ const VocabulariesCheckComponent = () => {
 
     const getVocabularies = () => {
         VocabulariesService.getList().then(data => {
-            if (data && data.status === 200) {
+            if (data && data.status === HttpStatus.SUCCESS) {
                 setVocabularies(data.data);
             } else {
                 alert('You have been finish your course today');

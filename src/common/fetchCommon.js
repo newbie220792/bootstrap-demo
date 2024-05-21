@@ -1,3 +1,5 @@
+import {HttpStatus} from './HttpStatus';
+
 export const fetchGet = async (url, data) => {
     if (data) {
         url = url + '?' + new URLSearchParams(data).toString();
@@ -12,10 +14,10 @@ export const fetchGet = async (url, data) => {
             'Bearer ': localStorage.getItem('access_token'),
         }
     });
-    if (res.status === 401) {
+    if (res.status === HttpStatus.UNAUTHORIZED) {
         //todo: navigate to login page
-        localStorage.removeItem('access_token');
-    } else if (res.status === 200) {
+        localStorage.removeItem('user_info');
+    } else if (res.status === HttpStatus.SUCCESS) {
         return res.json();
     } else {
         throw new Error();
@@ -33,10 +35,10 @@ export const fetchPost = async (url, data) => {
             'Bearer ': localStorage.getItem('access_token'),
         }
     });
-    if (res.status === 401) {
+    if (res.status === HttpStatus.UNAUTHORIZED) {
         //todo: navigate to login page
-        localStorage.removeItem('access_token');
-    } else if (res.status === 200) {
+        localStorage.removeItem('user_info');
+    } else if (res.status === HttpStatus.SUCCESS) {
         return res.json();
     } else {
         throw new Error();

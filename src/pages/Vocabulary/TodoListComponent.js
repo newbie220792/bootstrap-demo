@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Form} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import ProgressBar from '../../components/ProgressBar';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const TodoListComponent = () => {
     const [lessonStatus, setLessonStatus] = useState({});
@@ -31,7 +32,7 @@ const TodoListComponent = () => {
     };
     const getReportToday = () => {
         VocabulariesService.getReportToday().then(data => {
-            if (data.status === 0) {
+            if (data.status === HttpStatus.SUCCESS) {
                 setLessonStatus({
                     duolingo: data.data.isLearningDuolingo === 1,
                     grammar: data.data.isLearningGrammar === 1,
