@@ -4,8 +4,12 @@ import {Controller, useForm} from 'react-hook-form';
 import fb from '../../assets/facebook.png';
 import google from '../../assets/google.png';
 import github from '../../assets/github.png';
+import {VocabulariesService} from '../../services/vocabulariesService';
+import {HttpStatus} from '../../common/HttpStatus';
+import {useNavigate} from 'react-router-dom';
 
 const LoginComponent = () => {
+    const navigate = useNavigate();
     const {
         handleSubmit,
         control,
@@ -21,7 +25,15 @@ const LoginComponent = () => {
     });
 
     const onSubmit = () => {
-
+        const {username, password} = getValues();
+        VocabulariesService.login(username, password).then(res => {
+            if (res.status === HttpStatus.SUCCESS) {
+                localStorage.setItem('user_info', res);
+                navigate('/');
+            } else {
+                alert(res.message);
+            }
+        });
     };
 
 
@@ -47,7 +59,7 @@ const LoginComponent = () => {
                         control={control}
                         name="username"
                         rules={{
-                            required: true,
+                            required: 'Username is required',
                         }}
                         render={({field, formState, fieldState}) => (
                             <input
@@ -61,7 +73,7 @@ const LoginComponent = () => {
                         control={control}
                         name="password"
                         rules={{
-                            required: true,
+                            required: 'Password is required',
                         }}
                         render={({field, formState, fieldState}) => (
                             <input
