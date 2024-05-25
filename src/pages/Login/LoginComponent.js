@@ -26,9 +26,10 @@ const LoginComponent = () => {
 
     const onSubmit = () => {
         const {username, password} = getValues();
-        VocabulariesService.login(username, password).then(res => {
+        VocabulariesService.login({username, password}).then(res => {
             if (res.status === HttpStatus.SUCCESS) {
                 localStorage.setItem('user_info', res);
+                localStorage.setItem('access_token', res.data.accessToken);
                 navigate('/');
             } else {
                 alert(res.message);

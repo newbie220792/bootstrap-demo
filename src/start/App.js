@@ -1,6 +1,8 @@
-import { Route, Routes } from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
-import { routers } from '../routers/routers';
+import {routers} from '../routers/routers';
+
+
 const App = () => {
     return (
         <div className='app-container'>
@@ -14,7 +16,7 @@ const App = () => {
                             path={process.env.PUBLIC_URL + r.path}
                             element={
                                 <Layout>
-                                    <Page />
+                                    <Page/>
                                 </Layout>
                             }
                         />

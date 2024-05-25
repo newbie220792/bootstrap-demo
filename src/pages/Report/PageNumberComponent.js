@@ -49,7 +49,7 @@ const PageNumberComponent = ({pageIndex, tableInstance}) => {
                         <a
                             key={`pagination-${v}`}
                             onClick={goToPage(v)}
-                            className={`paginate_button ${pageIndex === v ? 'current' : ''}`}>
+                            className={`paginate_button btn btn-outline-info pe-auto me-2 ${pageIndex === v ? 'current' : ''}`}>
                             {v + 1}
                         </a>
                     ) : (

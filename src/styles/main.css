@@ -62,3 +62,8 @@ body {
 .btn-done {
 
 }
+
+.current {
+    background: green;
+    color: white;
+}

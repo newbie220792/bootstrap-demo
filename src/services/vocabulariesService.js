@@ -1,12 +1,12 @@
 import {fetchGet, fetchPost} from '../common/fetchCommon';
 
 export const VocabulariesService = {
-    getList: () => fetchGet('/vocabularies/list', null),
-    addVocabularies: (vocabularies) => fetchPost('/vocabularies/add-all', vocabularies),
-    addVocabulary: (vocabularies) => fetchPost('/vocabularies/add', vocabularies),
-    updateVocabularies: (data) => fetchGet('/vocabularies/update', data),
-    getReport: () => fetchGet('/vocabularies/report', null),
-    updateReportToday: (lesson) => fetchGet('/vocabularies/report/lesson/' + lesson, null),
-    getReportToday: () => fetchGet('/vocabularies/report/today', null),
-    login: (data) => fetchPost('/vocabularies/report/today', data)
+    getList: () => fetchGet('/vocabulary/list', null),
+    addVocabularies: (vocabularies) => fetchPost('/vocabulary/add-all', vocabularies),
+    addVocabulary: (vocabularies) => fetchPost('/vocabulary/add', vocabularies),
+    updateVocabularies: (data) => fetchGet('/vocabulary/update', data),
+    getReport: () => fetchGet('/vocabulary/report', null),
+    updateReportToday: (lesson) => fetchGet('/vocabulary/report/lesson/' + lesson, null),
+    getReportToday: () => fetchGet('/vocabulary/report/today', null),
+    login: (data) => fetchPost('/auth/login', data)
 };
