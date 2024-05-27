@@ -7,6 +7,7 @@ import github from '../../assets/github.png';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
 import {useNavigate} from 'react-router-dom';
+import {DASHBOARD_PATH} from "../../common/roles";
 
 const LoginComponent = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const LoginComponent = () => {
             if (res.status === HttpStatus.SUCCESS) {
                 localStorage.setItem('user_info', res);
                 localStorage.setItem('access_token', res.data.accessToken);
-                navigate('/');
+                navigate(DASHBOARD_PATH);
             } else {
                 alert(res.message);
             }

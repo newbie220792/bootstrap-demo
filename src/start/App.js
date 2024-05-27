@@ -1,9 +1,18 @@
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import {routers} from '../routers/routers';
-
+import {useEffect} from "react";
+import {LOGIN_PATH} from "../common/roles";
 
 const App = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    useEffect(() => {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            navigate(LOGIN_PATH);
+        }
+    }, [location]);
     return (
         <div className='app-container'>
             <Routes>

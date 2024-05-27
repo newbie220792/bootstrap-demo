@@ -31,6 +31,7 @@ export const fetchGet = async (url, data) => {
 };
 
 export const fetchPost = async (url, data) => {
+    // const navigate = useNavigate();
     let headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -50,6 +51,7 @@ export const fetchPost = async (url, data) => {
     if (res.status === HttpStatus.UNAUTHORIZED) {
         //todo: navigate to login page
         localStorage.removeItem('user_info');
+        // navigate(LOGIN_PATH)
     } else if (res.status === HttpStatus.SUCCESS) {
         return res.json();
     } else {
