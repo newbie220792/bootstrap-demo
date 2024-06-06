@@ -67,6 +67,11 @@ const ReportComponent = () => {
                 header: 'Number Of Failures',
                 cell: ({getValue}) => getValue() === null ? '-' : getValue()
             }),
+            columnHelper.accessor('numberOfNewWord', {
+                id: 'numberOfNewWord',
+                header: 'Number Of New Word',
+                cell: ({getValue}) => getValue() === null ? '-' : getValue()
+            }),
             columnHelper.accessor('isLearningDuolingo', {
                 id: 'isLearningDuolingo',
                 header: 'Learning Duolingo',
