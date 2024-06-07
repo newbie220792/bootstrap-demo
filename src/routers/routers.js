@@ -58,4 +58,10 @@ export const routers = [
         layout: AuthLayout,
         role: ['all'],
     },
+    // {
+    //     path: '/oauth2/redirect',
+    //     component: OAuth2RedirectHandler,
+    //     layout: EmptyLayout,
+    //     role: ['all'],
+    // },
 ];

@@ -5,3 +5,4 @@ export const DASHBOARD_PATH = '/';
 export const VOCABULARY_PATH = '/vocabulary';
 export const REPORT_PATH = '/report';
 export const PROFILE_PATH = '/profile';
+export const OAUTH2_REDIRECT_PATH = '/oauth2/redirect';

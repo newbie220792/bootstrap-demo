@@ -7,7 +7,7 @@ import github from '../../assets/github.png';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
 import {useNavigate} from 'react-router-dom';
-import {DASHBOARD_PATH} from "../../common/roles";
+import {DASHBOARD_PATH} from '../../common/roles';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
@@ -43,8 +43,13 @@ const LoginComponent = () => {
 
     };
 
-    const handleSignInGoogle = () => {
+    const handleLoginSuccess = (tokenResponse) => {
+        console.log(tokenResponse);
+    };
 
+    const handleSignInGoogle = () => {
+        const oauth2Window = window.open('http://localhost:8181/oauth2/authorize/google?redirect_uri=http://localhost:3001/oauth2/redirect');
+        window.close();
     };
 
     const handleSignInFb = () => {
