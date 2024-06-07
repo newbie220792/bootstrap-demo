@@ -38,7 +38,8 @@ const TodoListComponent = () => {
                     grammar: data.data.isLearningGrammar === 1,
                     speaking: data.data.isPracticeSpeaking === 1,
                     vocabulary: data.data.isLearningVocabulary === 1,
-                    totalVocabulary: data.data.totalVocabulary
+                    totalVocabulary: data.data.totalVocabulary,
+                    newWords: data.data.newWords || ''
                 });
             }
         });
@@ -57,7 +58,7 @@ const TodoListComponent = () => {
                 <div
                     className={`col-6 mt-2`}>
                     {lessonStatus.vocabulary &&
-                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary || 50 : 0}
+                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary || 0 : 0}
                                      label={lessonStatus.vocabulary ? `${lessonStatus.totalVocabulary || 0}/100` : '0/100'}/>}
                 </div>
                 <div className={'col-1'}>
@@ -105,6 +106,17 @@ const TodoListComponent = () => {
                                                        onClick={() => handleDoneLesson('speaking')}> Ok
                     </button>}
                 </div>
+            </div>
+            <div className={'w-100 row ms-1 mt-2'}>
+                <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>New
+                    words:</Form.Label>
+                <div className={`col-6 mt-2`}>
+                    {lessonStatus.newWords &&
+                        <ProgressBar currentPercent={lessonStatus.newWords ? lessonStatus.newWords : 0}
+                                     label={lessonStatus.newWords}/>}
+                </div>
+                {/*<div className={'col-1'}>*/}
+                {/*</div>*/}
             </div>
         </div>
     );
