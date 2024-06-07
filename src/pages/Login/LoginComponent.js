@@ -4,13 +4,15 @@ import {Controller, useForm} from 'react-hook-form';
 import fb from '../../assets/facebook.png';
 import google from '../../assets/google.png';
 import github from '../../assets/github.png';
+import microsoft from '../../assets/microsoft.svg';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {DASHBOARD_PATH} from '../../common/roles';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const {
         handleSubmit,
         control,
@@ -38,22 +40,9 @@ const LoginComponent = () => {
         });
     };
 
-
-    const handleSignInGithub = () => {
-
-    };
-
-    const handleLoginSuccess = (tokenResponse) => {
-        console.log(tokenResponse);
-    };
-
-    const handleSignInGoogle = () => {
-        const oauth2Window = window.open('http://localhost:8181/oauth2/authorize/google?redirect_uri=http://localhost:3001/oauth2/redirect');
-        window.close();
-    };
-
-    const handleSignInFb = () => {
-
+    const handleSingleSignOn = (registrationId) => {
+        window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`);
+        // window.close();
     };
 
     return (
@@ -97,9 +86,10 @@ const LoginComponent = () => {
             </form>
             <Form.Label className={'mt-5'}>Or Sign Up Using</Form.Label>
             <div className={'icon-link mt-2'}>
-                <Image src={fb} className={'img'} onClick={handleSignInFb}/>
-                <Image src={google} className={'img'} onClick={handleSignInGoogle}/>
-                <Image src={github} className={'img'} onClick={handleSignInGithub}/>
+                <Image src={fb} className={'img'} onClick={() => handleSingleSignOn('facebook')}/>
+                <Image src={google} className={'img'} onClick={() => handleSingleSignOn('google')}/>
+                <Image src={github} className={'img'} onClick={() => handleSingleSignOn('github')}/>
+                <Image src={microsoft} className={'img'} onClick={() => handleSingleSignOn('microsoft')}/>
             </div>
             <a className={'mt-5 sign-up text-uppercase'}>Sign up</a>
         </div>

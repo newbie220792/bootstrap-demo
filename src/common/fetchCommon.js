@@ -9,11 +9,11 @@ export const fetchGet = async (url, data) => {
         'Accept': 'application/json',
         'Origin': '*',
         // 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-    }
+    };
     if (localStorage.getItem('access_token')) {
-        headers.Authorization = 'Bearer ' + localStorage.getItem('access_token')
+        headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
     }
-    const res = await fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
+    const res = await fetch(process.env.REACT_APP_WEB_SERVICE_HOST + process.env.REACT_APP_WEB_SERVICE_CONTEXT_PATH + url, {
         method: 'GET',
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -21,7 +21,7 @@ export const fetchGet = async (url, data) => {
     });
     if (res.status === HttpStatus.UNAUTHORIZED) {
         //todo: navigate to login page
-        console.log('permission denied')
+        console.log('permission denied');
         localStorage.removeItem('user_info');
     } else if (res.status === HttpStatus.SUCCESS || res.status == '0') {
         return res.json();
@@ -37,11 +37,11 @@ export const fetchPost = async (url, data) => {
         'Accept': 'application/json',
         'Origin': '*',
         // 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-    }
+    };
     if (localStorage.getItem('access_token')) {
-        headers.Authorization = 'Bearer ' + localStorage.getItem('access_token')
+        headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
     }
-    const res = await fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
+    const res = await fetch(process.env.REACT_APP_WEB_SERVICE_HOST + process.env.REACT_APP_WEB_SERVICE_CONTEXT_PATH + url, {
         method: 'POST',
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
