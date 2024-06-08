@@ -31,7 +31,7 @@ const LoginComponent = () => {
         const {username, password} = getValues();
         VocabulariesService.login({username, password}).then(res => {
             if (res.status === HttpStatus.SUCCESS) {
-                localStorage.setItem('user_info', res);
+                localStorage.setItem('user', JSON.stringify(res.data));
                 localStorage.setItem('access_token', res.data.accessToken);
                 navigate(DASHBOARD_PATH);
             } else {
@@ -41,7 +41,7 @@ const LoginComponent = () => {
     };
 
     const handleSingleSignOn = (registrationId) => {
-        window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`);
+        const oauth2Modal = window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
         // window.close();
     };
 

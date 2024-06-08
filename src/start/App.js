@@ -2,7 +2,8 @@ import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import {routers} from '../routers/routers';
 import {useEffect} from 'react';
-import {DASHBOARD_PATH, LOGIN_PATH, OAUTH2_REDIRECT_PATH} from '../common/roles';
+import {LOGIN_PATH, OAUTH2_REDIRECT_PATH} from '../common/roles';
+import getWindow from "@popperjs/core/lib/dom-utils/getWindow";
 
 const App = () => {
     const location = useLocation();
@@ -11,10 +12,15 @@ const App = () => {
         if (location.pathname === OAUTH2_REDIRECT_PATH) {
             const token = new URLSearchParams(location.search).get('token');
             const error = new URLSearchParams(location.search).get('error');
+            const username = new URLSearchParams(location.search).get('username');
+            const avatar = new URLSearchParams(location.search).get('avatar');
             if (token) {
+                getWindow('oauth2Modal').close();
                 console.log(token);
                 localStorage.setItem('access_token', token);
-                navigate(DASHBOARD_PATH);
+                localStorage.setItem('user', JSON.stringify({username: username, avatar: avatar}));
+                // navigate(DASHBOARD_PATH);
+                window.opener.location = '/';
             } else if (error) {
                 navigate(LOGIN_PATH);
                 console.log(error);
