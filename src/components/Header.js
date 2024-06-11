@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {useMemo} from 'react';
+import {forwardRef, useMemo} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {menus} from '../common/menus';
-import {Dropdown, Image} from "react-bootstrap";
+import {Dropdown, Image} from 'react-bootstrap';
 import guest from '../assets/guest.jpeg';
-import {VocabulariesService} from "../services/vocabulariesService";
-import {LOGIN_PATH} from "../common/roles";
+import {VocabulariesService} from '../services/vocabulariesService';
+import {LOGIN_PATH, PROFILE_PATH} from '../common/roles';
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -16,23 +16,29 @@ export const Header = () => {
         }
         const user = JSON.parse(userString);
         return user ? user : {avatar: guest, username: ''};
-    }, [])
+    }, []);
 
     const logout = () => {
         const token = localStorage.getItem('access_token');
         const logoutRequest = {
             username: userInfo.username,
             token: token
-        }
+        };
         VocabulariesService.logout(logoutRequest).then();
         localStorage.removeItem('user');
         localStorage.removeItem('access_token');
-        navigate(LOGIN_PATH)
-    }
-    const avatarComponent = () => {
-        return <Image src={userInfo.avatar} alt={"avatar"} title={userInfo.username}
-                      style={{width: 40, height: 40, borderRadius: '50%', cursor: 'pointer'}}/>
-    }
+        navigate(LOGIN_PATH);
+    };
+
+    const AvatarComponent = forwardRef(({children, ...rest}, ref) => {
+        return (
+            <button {...rest} type="button" className={`btn`}
+                    ref={ref}><Image src={userInfo.avatar || guest || ''} alt={'avatar'}
+                                     title={userInfo.username || 'Guest'}
+                                     style={{width: 40, height: 40, borderRadius: '50%', cursor: 'pointer'}}/>
+            </button>
+        );
+    });
 
     return (
         <header className="site-header">
@@ -54,13 +60,11 @@ export const Header = () => {
                     })}
                     <div className={'d-flex align-items-center'}>
                         <Dropdown>
-                            <Image src={userInfo.avatar || guest} alt={"avatar"} title={userInfo.username || 'Guest'}
-                                   style={{width: 40, height: 40, borderRadius: '50%', cursor: 'pointer'}}/>
-
-                            <Dropdown.Toggle id="dropdown-split-basic"/>
-
+                            <Dropdown.Toggle id="dropdown-split-basic" as={AvatarComponent}/>
                             <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
+                                <Dropdown.Item href="#" onClick={() => {
+                                    navigate(PROFILE_PATH);
+                                }}>Profile</Dropdown.Item>
                                 <Dropdown.Item href="#" onClick={logout}>Logout</Dropdown.Item>
                                 {/*<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>*/}
                             </Dropdown.Menu>
