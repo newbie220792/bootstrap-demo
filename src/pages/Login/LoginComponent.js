@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Form, Image} from 'react-bootstrap';
 import {Controller, useForm} from 'react-hook-form';
 import fb from '../../assets/facebook.png';
@@ -7,12 +7,13 @@ import github from '../../assets/github.png';
 import microsoft from '../../assets/microsoft.svg';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {DASHBOARD_PATH} from '../../common/roles';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const [errorFromServer, setErrorFromServer] = useState('');
     const {
         handleSubmit,
         control,
@@ -29,20 +30,21 @@ const LoginComponent = () => {
 
     const onSubmit = () => {
         const {username, password} = getValues();
+        setErrorFromServer('');
         VocabulariesService.login({username, password}).then(res => {
             if (res.status === HttpStatus.SUCCESS) {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 localStorage.setItem('access_token', res.data.accessToken);
                 navigate(DASHBOARD_PATH);
             } else {
-                alert(res.message);
+                reset(null, {keepValues: true});
+                setErrorFromServer(res.message);
             }
         });
     };
 
     const handleSingleSignOn = (registrationId) => {
-        const oauth2Modal = window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/api/auth/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
-        // window.close();
+        window.open(`${process.env.REACT_APP_WEB_SERVICE_URL}/auth/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
     };
 
     return (
@@ -63,7 +65,7 @@ const LoginComponent = () => {
                                 {...field}
                             />)}
                     />
-                    {errors.username && <label className={'text-danger'}>{errors.username.message}</label>}
+                    {errors.username && <ErrorMessage message={errors.username.message}/>}
                     <Form.Label>Password</Form.Label>
                     <Controller
                         control={control}
@@ -78,18 +80,21 @@ const LoginComponent = () => {
                                 {...field}
                             />)}
                     />
-                    {errors.password && <label className={'text-danger'}>{errors.password.message}</label>}
+                    {errors.password && <ErrorMessage message={errors.password.message}/>}
                     <div className={'d-flex flex-column gap-3 w-100'}>
                         <button type={'submit'} className={'btn btn-success mt-2 text-uppercase'}>Login</button>
                     </div>
+                    {errorFromServer &&
+                        <ErrorMessage message={errorFromServer}/>}
                 </div>
             </form>
             <Form.Label className={'mt-5'}>Or Sign Up Using</Form.Label>
             <div className={'icon-link mt-2'}>
-                <Image src={fb} className={'img'} onClick={() => handleSingleSignOn('facebook')}/>
-                <Image src={google} className={'img'} onClick={() => handleSingleSignOn('google')}/>
-                <Image src={github} className={'img'} onClick={() => handleSingleSignOn('github')}/>
-                <Image src={microsoft} className={'img'} onClick={() => handleSingleSignOn('microsoft')}/>
+                <Image src={fb} className={'img'} title={'Facebook'} onClick={() => handleSingleSignOn('facebook')}/>
+                <Image src={google} className={'img'} title={'Google'} onClick={() => handleSingleSignOn('google')}/>
+                <Image src={github} className={'img'} title={'Github'} onClick={() => handleSingleSignOn('github')}/>
+                <Image src={microsoft} className={'img'} title={'Microsoft'}
+                       onClick={() => handleSingleSignOn('microsoft')}/>
             </div>
             <a className={'mt-5 sign-up text-uppercase'}>Sign up</a>
         </div>

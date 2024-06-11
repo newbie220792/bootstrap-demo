@@ -32,3 +32,8 @@ a {
     text-decoration: underline;
     color: blue;
 }
+
+.dropdown-item:hover {
+    background-color: blue;
+    color: white;
+}

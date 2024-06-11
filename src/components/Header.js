@@ -62,6 +62,7 @@ export const Header = () => {
                         <Dropdown>
                             <Dropdown.Toggle id="dropdown-split-basic" as={AvatarComponent}/>
                             <Dropdown.Menu>
+                                <Dropdown.Item href="#" disabled>{userInfo.username}</Dropdown.Item>
                                 <Dropdown.Item href="#" onClick={() => {
                                     navigate(PROFILE_PATH);
                                 }}>Profile</Dropdown.Item>
