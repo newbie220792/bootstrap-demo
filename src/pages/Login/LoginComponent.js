@@ -41,7 +41,7 @@ const LoginComponent = () => {
     };
 
     const handleSingleSignOn = (registrationId) => {
-        const oauth2Modal = window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
+        const oauth2Modal = window.open(`${process.env.REACT_APP_WEB_SERVICE_HOST}/api/auth/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
         // window.close();
     };
 
