@@ -7,16 +7,19 @@ import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import App from '../src/start/App';
 import '../src/styles/index.css';
-
+import store from './stores/ReduxStore';
+import {Provider} from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 root.render(
-    <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-            <React.StrictMode>
-                <App/>
-            </React.StrictMode>
-        </BrowserRouter>
-    </QueryClientProvider>
+    <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <React.StrictMode>
+                    <App/>
+                </React.StrictMode>
+            </BrowserRouter>
+        </QueryClientProvider>
+    </Provider>
 );

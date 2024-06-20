@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Image} from 'react-bootstrap';
+import {Form, Image, Spinner} from 'react-bootstrap';
 import {Controller, useForm} from 'react-hook-form';
 import fb from '../../assets/facebook.png';
 import google from '../../assets/google.png';
@@ -14,6 +14,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 const LoginComponent = () => {
     const navigate = useNavigate();
     const [errorFromServer, setErrorFromServer] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const {
         handleSubmit,
         control,
@@ -31,6 +32,7 @@ const LoginComponent = () => {
     const onSubmit = () => {
         const {username, password} = getValues();
         setErrorFromServer('');
+        setIsLoading(true);
         VocabulariesService.login({username, password}).then(res => {
             if (res.status === HttpStatus.SUCCESS) {
                 localStorage.setItem('user', JSON.stringify(res.data));
@@ -40,7 +42,7 @@ const LoginComponent = () => {
                 reset(null, {keepValues: true});
                 setErrorFromServer(res.message);
             }
-        });
+        }).finally(() => setIsLoading(false));
     };
 
     const handleSingleSignOn = (registrationId) => {
@@ -82,7 +84,10 @@ const LoginComponent = () => {
                     />
                     {errors.password && <ErrorMessage message={errors.password.message}/>}
                     <div className={'d-flex flex-column gap-3 w-100'}>
-                        <button type={'submit'} className={'btn btn-success mt-2 text-uppercase'}>Login</button>
+                        {!isLoading ?
+                            <button type={'submit'} className={'btn btn-success mt-2 text-uppercase'}>Login</button>
+                            : <button className={'btn btn-success mt-2 text-uppercase'}><Spinner
+                                size="sm"></Spinner></button>}
                     </div>
                     {errorFromServer &&
                         <ErrorMessage message={errorFromServer}/>}
