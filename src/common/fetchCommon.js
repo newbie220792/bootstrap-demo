@@ -3,16 +3,19 @@ import store from '../stores/ReduxStore';
 import {LoadingSlice} from '../stores/slices/LoadingSlice';
 import {LOGIN_PATH} from './roles';
 
-export const fetchGet = (url, param) => {
-    return fetchCommon(url, null, 'GET', param);
+export const fetchGet = (url, param, isShowSpinner) => {
+    return fetchCommon(url, null, 'GET', param, isShowSpinner);
 };
 
-export const fetchPost = async (url, data, param) => {
-    return fetchCommon(url, data, 'POST', param);
+export const fetchPost = async (url, data, param, isShowSpinner) => {
+    return fetchCommon(url, data, 'POST', param, isShowSpinner);
 };
 
 const {actions: LoadingActions} = LoadingSlice;
-export const fetchCommon = (url, data, method, param) => {
+export const fetchCommon = (url, data, method, param, isShowSpinner) => {
+    if (isShowSpinner) {
+        store.dispatch(LoadingActions.setIsLoading(true));
+    }
     if (param) {
         url = url + '?' + new URLSearchParams(param).toString();
     }
@@ -24,7 +27,7 @@ export const fetchCommon = (url, data, method, param) => {
     if (localStorage.getItem('access_token')) {
         headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
     }
-    store.dispatch(LoadingActions.setIsLoading(true));
+
     return fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin
