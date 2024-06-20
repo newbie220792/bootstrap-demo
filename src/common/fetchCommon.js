@@ -1,6 +1,7 @@
 import {HttpStatus} from './HttpStatus';
 import store from '../stores/ReduxStore';
 import {LoadingSlice} from '../stores/slices/LoadingSlice';
+import {LOGIN_PATH} from './roles';
 
 export const fetchGet = (url, param) => {
     return fetchCommon(url, null, 'GET', param);
@@ -35,7 +36,7 @@ export const fetchCommon = (url, data, method, param) => {
             if (res.status === HttpStatus.UNAUTHORIZED) {
                 localStorage.removeItem('user');
                 localStorage.removeItem('access_token');
-                window.location.reload();
+                window.location.assign(LOGIN_PATH);
             }
             throw new Error(JSON.stringify({status: res.status, message: res.statusText}));
         } else {
@@ -44,13 +45,16 @@ export const fetchCommon = (url, data, method, param) => {
     }).then((res) => res.json())
         .then(data => {
             if (!data) {
-                throw new Error('No body found in response of url ' + url);
+                throw new Error(JSON.stringify({
+                    status: HttpStatus.BAD_REQUEST,
+                    message: `No body found in response of url ${url}`
+                }));
             }
             if (data.status === HttpStatus.UNAUTHORIZED) {
                 localStorage.removeItem('user');
                 localStorage.removeItem('access_token');
-                window.location.reload();
-                throw new Error('Authenticate fail:  ' + data.message);
+                window.location.assign(LOGIN_PATH);
+                throw new Error(JSON.stringify(data));
             } else if (data.status === HttpStatus.SUCCESS) {
                 return Promise.resolve(data);
             } else {

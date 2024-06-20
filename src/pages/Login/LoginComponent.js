@@ -94,7 +94,7 @@ const LoginComponent = () => {
                 </div>
             </form>
             <Form.Label className={'mt-5'}>Or Sign Up Using</Form.Label>
-            <div className={'icon-link mt-2'}>
+            <div className={'d-flex mt-2 gap-4 justify-content-around'}>
                 <Image src={fb} className={'img'} title={'Facebook'} onClick={() => handleSingleSignOn('facebook')}/>
                 <Image src={google} className={'img'} title={'Google'} onClick={() => handleSingleSignOn('google')}/>
                 <Image src={github} className={'img'} title={'Github'} onClick={() => handleSingleSignOn('github')}/>
