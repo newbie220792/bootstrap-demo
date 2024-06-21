@@ -8,25 +8,38 @@ const TodoListComponent = () => {
     const [lessonStatus, setLessonStatus] = useState({});
 
     const updateLesson = (lesson) => {
-        VocabulariesService.updateReportToday(lesson).then();
+        return VocabulariesService.updateReportToday(lesson);
     };
+
     const handleDoneLesson = (code) => {
         switch (code) {
             case 'vocabulary':
-                setLessonStatus(prevState => ({...prevState, vocabulary: true}));
-                updateLesson('vocabulary');
+                updateLesson('vocabulary').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, vocabulary: true}));
+                    }
+                });
                 break;
             case 'duolingo':
-                setLessonStatus(prevState => ({...prevState, duolingo: true}));
-                updateLesson('duolingo');
+                updateLesson('duolingo').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, duolingo: true}));
+                    }
+                });
                 break;
             case 'grammar':
-                setLessonStatus(prevState => ({...prevState, grammar: true}));
-                updateLesson('grammar');
+                updateLesson('grammar').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, grammar: true}));
+                    }
+                });
                 break;
             case 'speaking':
-                setLessonStatus(prevState => ({...prevState, speaking: true}));
-                updateLesson('speaking');
+                updateLesson('speaking').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, speaking: true}));
+                    }
+                });
                 break;
         }
     };
@@ -39,7 +52,7 @@ const TodoListComponent = () => {
                     speaking: data.data.isPracticeSpeaking === 1,
                     vocabulary: data.data.isLearningVocabulary === 1,
                     totalVocabulary: data.data.totalVocabulary,
-                    newWords: data.data.newWords || ''
+                    newWords: data.data.newWords || 0
                 });
             }
         });
@@ -115,8 +128,6 @@ const TodoListComponent = () => {
                         <ProgressBar currentPercent={lessonStatus.newWords ? lessonStatus.newWords : 0}
                                      label={lessonStatus.newWords}/>}
                 </div>
-                {/*<div className={'col-1'}>*/}
-                {/*</div>*/}
             </div>
         </div>
     );

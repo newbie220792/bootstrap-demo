@@ -10,6 +10,7 @@ import {HttpStatus} from '../../common/HttpStatus';
 import {useNavigate} from 'react-router-dom';
 import {DASHBOARD_PATH} from '../../common/roles';
 import ErrorMessage from '../../components/ErrorMessage';
+import Clock from '../../components/Clock';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
@@ -52,9 +53,10 @@ const LoginComponent = () => {
     return (
         <div className="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
             <h1 className={'text-uppercase'}>Login</h1>
+            <Clock/>
             <form onSubmit={handleSubmit(onSubmit)} className={'w-auto mt-4'}>
                 <div className={'d-flex flex-column gap-2 w-auto'}>
-                    <Form.Label>User name</Form.Label>
+                    <Form.Label>User name:</Form.Label>
                     <Controller
                         control={control}
                         name="username"

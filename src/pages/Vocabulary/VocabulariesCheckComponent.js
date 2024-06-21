@@ -64,7 +64,7 @@ const VocabulariesCheckComponent = () => {
             handleSpeak(vocabularies[vocabularyIndex].vocabulary);
         }
         if (vocabularyIndex === vocabularies.length && vocabularyIndex > 0) {
-            alert('You have been finish your course today');
+            // alert('You have been finish your course today');
             handleSpeak('You have been finish your course today');
         }
     }, [vocabularyIndex, vocabularies]);
@@ -74,7 +74,7 @@ const VocabulariesCheckComponent = () => {
             if (data && data.status === HttpStatus.SUCCESS) {
                 setVocabularies(data.data);
             } else {
-                alert('You have been finish your course today');
+                // alert('You have been finish your course today');
                 handleSpeak('You have been finish your course today');
             }
         });
