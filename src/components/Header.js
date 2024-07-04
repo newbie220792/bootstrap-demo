@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {forwardRef, useMemo} from 'react';
+import {forwardRef} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {menus} from '../common/menus';
 import {Dropdown, Image} from 'react-bootstrap';
@@ -9,14 +9,16 @@ import {LOGIN_PATH, PROFILE_PATH} from '../common/roles';
 
 export const Header = () => {
     const navigate = useNavigate();
-    const userInfo = useMemo(() => {
-        const userString = localStorage.getItem('user');
-        if (!userString) {
-            return guest;
-        }
-        const user = JSON.parse(userString);
-        return user ? user : {avatar: guest, username: ''};
-    }, []);
+    const userString = localStorage.getItem('user');
+    // const userInfo = useMemo(() => {
+    //     if (!userString) {
+    //         return JSON.parse(userString);
+    //     } else {
+    //         return {avatar: guest, username: ''};
+    //     }
+    // }, [userString]);
+
+    const userInfo = {avatar: guest, username: ''};
 
     const logout = () => {
         const token = localStorage.getItem('access_token');

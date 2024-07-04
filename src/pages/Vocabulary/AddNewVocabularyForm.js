@@ -19,6 +19,7 @@ const AddNewVocabularyForm = () => {
             vocabulary: '',
             vietnameseTranslation: '',
             imageDescription: '',
+            description: ''
         }
     });
 
@@ -38,14 +39,15 @@ const AddNewVocabularyForm = () => {
         return data[0][0][0];
     };
     const onSubmit = async () => {
-        const {vocabulary, imageDescription} = getValues();
+        const {vocabulary, imageDescription, description} = getValues();
         handleSpeak(vocabulary);
         const vietnameseTranslation = await onTranslate(vocabulary);
         // const imageDescription = await fetchPostImage(null, null);
         const req = {
             vocabulary: vocabulary,
             vietnameseTranslation: vietnameseTranslation,
-            imageDescription: imageDescription
+            imageDescription: imageDescription,
+            description: description
         };
         VocabulariesService.addVocabulary(req).then(data => {
             if (data && data.status === HttpStatus.SUCCESS) {
@@ -81,6 +83,19 @@ const AddNewVocabularyForm = () => {
                     rules={{
                         required: true,
                     }}
+                    render={({field, formState, fieldState}) => (
+                        <input
+                            className={`form-control input-group-sm ${fieldState.error ? 'is-invalid' : ''}`}
+                            {...field}
+                        />)}
+                />
+                <label>Ví dụ:</label>
+                <Controller
+                    control={control}
+                    name="description"
+                    // rules={{
+                    //     required: true,
+                    // }}
                     render={({field, formState, fieldState}) => (
                         <input
                             className={`form-control input-group-sm ${fieldState.error ? 'is-invalid' : ''}`}

@@ -141,6 +141,13 @@ const VocabulariesCheckComponent = () => {
                             vocabularies[vocabularyIndex].vietnameseTranslation}</label>
 
                 </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Description: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].description &&
+                        vocabularies[vocabularyIndex].description}</label>
+
+                </div>
             </>}
             <div className={'row mt-2'}>
                 {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].imageDescription &&
