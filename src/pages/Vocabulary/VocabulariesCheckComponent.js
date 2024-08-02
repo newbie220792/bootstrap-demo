@@ -29,13 +29,17 @@ const VocabulariesCheckComponent = () => {
         VocabulariesService.updateVocabularies(req).then();
     };
 
-    const handleSpeak = (vocabulary) => {
-        if (!_.isEmpty(vocabulary)) {
+    const handleSpeak = async (vocabulary) => {
+        if (!_.isEmpty(vocabulary) && typeof vocabulary === 'object') {
+            window.responsiveVoice.speak(vocabulary.vocabulary);
+            setTimeout(() => window.responsiveVoice.speak(vocabulary.vietnameseTranslation, 'Vietnamese Female'), 1500);
+        } else if (typeof vocabulary === 'string') {
             window.responsiveVoice.speak(vocabulary);
         } else {
             window.responsiveVoice.speak('Vocabulary has not found');
         }
     };
+
     const onSubmit = () => {
         const {vocabulary} = getValues();
         if (!vocabularies || !vocabularies[vocabularyIndex] || !vocabularies[vocabularyIndex].vocabulary) {
@@ -51,17 +55,17 @@ const VocabulariesCheckComponent = () => {
             setVocabularyIndex(prevState => ++prevState);
             reset(null, {keepSubmitCount: false, keepDefaultValues: true});
         } else {
-            handleSpeak(vocabularies[vocabularyIndex].vocabulary);
+            handleSpeak(vocabularies[vocabularyIndex]);
             setError('vocabulary', {message: 'Wrong vocabulary. Input again!'});
         }
     };
     const handleListenAgain = () => {
-        handleSpeak(vocabularies[vocabularyIndex].vocabulary);
+        handleSpeak(vocabularies[vocabularyIndex]);
     };
 
     useEffect(() => {
         if (vocabularies[vocabularyIndex]) {
-            handleSpeak(vocabularies[vocabularyIndex].vocabulary);
+            handleSpeak(vocabularies[vocabularyIndex]);
         }
         if (vocabularyIndex === vocabularies.length && vocabularyIndex > 0) {
             // alert('You have been finish your course today');
