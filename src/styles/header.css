@@ -2,6 +2,7 @@ a {
     text-decoration: none;
     color: white;
 }
+
 .site-header {
     border-bottom: 1px solid #ccc;
     padding: 0.5em 1em;
@@ -25,4 +26,14 @@ a {
 .site-navigation li {
     display: inline-block;
     margin: 1.4em 1em 1em 1em;
+}
+
+.site-navigation li a:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.dropdown-item:hover {
+    background-color: blue;
+    color: white;
 }

@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Controller, useForm} from "react-hook-form";
-import {Image} from "react-bootstrap";
-import {VocabulariesService} from "../../services/vocabulariesService";
-import _ from "lodash";
+import {Controller, useForm} from 'react-hook-form';
+import {Image} from 'react-bootstrap';
+import {VocabulariesService} from '../../services/vocabulariesService';
+import _ from 'lodash';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const VocabulariesCheckComponent = () => {
-    const [vocabularies, setVocabularies] = useState([])
-    const [vocabularyIndex, setVocabularyIndex] = useState(0)
-    const [isStarted, setIsStarted] = useState(true)
-    const [answer, setAnswer] = useState('')
+    const [vocabularies, setVocabularies] = useState([]);
+    const [vocabularyIndex, setVocabularyIndex] = useState(0);
     const {
         handleSubmit,
         control,
@@ -26,84 +25,91 @@ const VocabulariesCheckComponent = () => {
         const req = {
             id: id,
             times: numberOfSubmit
-        }
+        };
         VocabulariesService.updateVocabularies(req).then();
-    }
-    const handleSpeak = (vocabulary) => {
-        if (!_.isEmpty(vocabulary)) {
-            window.responsiveVoice.speak(vocabulary)
+    };
+
+    const handleSpeak = async (vocabulary) => {
+        if (!_.isEmpty(vocabulary) && typeof vocabulary === 'object') {
+            window.responsiveVoice.speak(vocabulary.vocabulary);
+            setTimeout(() => window.responsiveVoice.speak(vocabulary.vietnameseTranslation, 'Vietnamese Female'), 1500);
+        } else if (typeof vocabulary === 'string') {
+            window.responsiveVoice.speak(vocabulary);
         } else {
-            window.responsiveVoice.speak("Vocabulary has not found")
+            window.responsiveVoice.speak('Vocabulary has not found');
         }
-    }
+    };
+
     const onSubmit = () => {
-        const {vocabulary} = getValues()
-        if (vocabulary === vocabularies[vocabularyIndex].vocabulary) {
+        const {vocabulary} = getValues();
+        if (!vocabularies || !vocabularies[vocabularyIndex] || !vocabularies[vocabularyIndex].vocabulary) {
+            handleSpeak(vocabulary);
+            setError('vocabulary', {message: 'Wrong vocabulary. Input again!'});
+            return;
+        }
+        if (vocabulary.toLowerCase() === vocabularies[vocabularyIndex].vocabulary.toLowerCase()) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
                 handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
-            // setAnswer('true')
             setVocabularyIndex(prevState => ++prevState);
             reset(null, {keepSubmitCount: false, keepDefaultValues: true});
         } else {
-            // setAnswer('false')
-            handleSpeak(vocabularies[vocabularyIndex].vocabulary)
-            setError('vocabulary', {message: 'Wrong vocabulary. Input again!'})
+            handleSpeak(vocabularies[vocabularyIndex]);
+            setError('vocabulary', {message: 'Wrong vocabulary. Input again!'});
         }
     };
     const handleListenAgain = () => {
-        handleSpeak(vocabularies[vocabularyIndex].vocabulary)
-    }
+        handleSpeak(vocabularies[vocabularyIndex]);
+    };
 
     useEffect(() => {
-        if (isStarted && vocabularies[vocabularyIndex]) {
-            handleSpeak(vocabularies[vocabularyIndex].vocabulary)
+        if (vocabularies[vocabularyIndex]) {
+            handleSpeak(vocabularies[vocabularyIndex]);
         }
         if (vocabularyIndex === vocabularies.length && vocabularyIndex > 0) {
-            alert('You have been finish your course today')
-            handleSpeak('You have been finish your course today')
+            // alert('You have been finish your course today');
+            handleSpeak('You have been finish your course today');
         }
-    }, [vocabularyIndex, isStarted, vocabularies]);
+    }, [vocabularyIndex, vocabularies]);
 
     const getVocabularies = () => {
         VocabulariesService.getList().then(data => {
-            if (data && data.status === 0) {
-                setVocabularies(data.data)
+            if (data && data.status === HttpStatus.SUCCESS) {
+                setVocabularies(data.data);
             } else {
-                alert('You have been finish your course today')
-                handleSpeak('You have been finish your course today')
+                // alert('You have been finish your course today');
+                handleSpeak('You have been finish your course today');
             }
-        })
-    }
+        });
+    };
     useEffect(() => {
         getVocabularies();
     }, []);
 
     const formatPhonetic = (phonetic) => {
-        return phonetic.replaceAll('\"', '')
-    }
+        return phonetic.replaceAll('\"', '');
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={'d-flex justify-content-center gap-1 mt-4'}>
-                <button type={"submit"} className={'btn btn-success'}>❮</button>
+            <div className={'d-flex justify-content-center gap-1 mt-md-5 pt-5'}>
                 <Controller
                     control={control}
                     name={'vocabulary'}
                     rules={{
-                        required: {value: true, message: 'Nhap tu vao'},
+                        required: {value: true, message: 'Please input vocabulary'},
                     }}
                     render={({field, formState, fieldState}) => (
                         <input
-                            className={`form-control input-group-sm w-25 ${errors.vocabulary ? 'is-invalid' : ''}`}
+                            className={`form-control input-group-sm w-75 ${errors.vocabulary ? 'is-invalid' : ''}`}
                             {...field}
                         />)}
                 />
-                <button type={"submit"} className={'btn btn-success'}>❯</button>
+                <button type={'submit'} className={'btn btn-success'}>❯</button>
             </div>
             {errors.vocabulary &&
-                <label className={'text-center w-75 text-danger mt-2'}>{errors.vocabulary.message}</label>}
+                <label className={'text-center w-100 text-danger mt-2'}>{errors.vocabulary.message}</label>}
             {submitCount > 3 && <div className={'row mt-2'}>
                 <label className={'col-1 text-end'}>&#x2022;</label>
                 <label
@@ -137,6 +143,13 @@ const VocabulariesCheckComponent = () => {
                         className={'col-10 text-start fw-bold'}>Vietnamese
                         Translation: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].vietnameseTranslation &&
                             vocabularies[vocabularyIndex].vietnameseTranslation}</label>
+
+                </div>
+                <div className={'row mt-2'}>
+                    <label className={'col-1 text-end'}>&#x2022;</label>
+                    <label
+                        className={'col-10 text-start fw-bold'}>Description: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].description &&
+                        vocabularies[vocabularyIndex].description}</label>
 
                 </div>
             </>}

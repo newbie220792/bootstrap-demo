@@ -1,7 +1,5 @@
-POST http://localhost:80/api/item
-Content-Type: application/json
-
-{}
+GET http://localhost:9090/api/v1/vocabularies/report
+Accept: application/json
 
 ###
 GET http://localhost:9090/api/v1/vocabularies/update?id=1

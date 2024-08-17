@@ -1,10 +1,5 @@
 export const menus = [
     {
-        id: 1,
-        path: '/videos',
-        name: 'Video',
-    },
-    {
         id: 2,
         path: '/photos',
         name: 'Photos',

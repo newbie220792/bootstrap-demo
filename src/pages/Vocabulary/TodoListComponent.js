@@ -1,65 +1,132 @@
-import React, {useState} from 'react';
-import {Form} from 'react-bootstrap'
+import React, {useEffect, useState} from 'react';
+import {Form} from 'react-bootstrap';
+import {VocabulariesService} from '../../services/vocabulariesService';
+import ProgressBar from '../../components/ProgressBar';
+import {HttpStatus} from '../../common/HttpStatus';
 
 const TodoListComponent = () => {
-    const [lessionStatus, setLessionStatus] = useState({})
-    const handleDoneLession = (code) => {
+    const [lessonStatus, setLessonStatus] = useState({});
+
+    const updateLesson = (lesson) => {
+        return VocabulariesService.updateReportToday(lesson);
+    };
+
+    const handleDoneLesson = (code) => {
         switch (code) {
             case 'vocabulary':
-                setLessionStatus(prevState => ({...prevState, vocabulary: true}))
+                updateLesson('vocabulary').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, vocabulary: true}));
+                    }
+                });
                 break;
             case 'duolingo':
-                setLessionStatus(prevState => ({...prevState, duolingo: true}))
+                updateLesson('duolingo').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, duolingo: true}));
+                    }
+                });
                 break;
             case 'grammar':
-                setLessionStatus(prevState => ({...prevState, grammar: true}))
+                updateLesson('grammar').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, grammar: true}));
+                    }
+                });
                 break;
             case 'speaking':
-                setLessionStatus(prevState => ({...prevState, speaking: true}))
+                updateLesson('speaking').then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        setLessonStatus(prevState => ({...prevState, speaking: true}));
+                    }
+                });
                 break;
         }
-    }
+    };
+    const getReportToday = () => {
+        VocabulariesService.getReportToday().then(data => {
+            if (data.status === HttpStatus.SUCCESS) {
+                setLessonStatus({
+                    duolingo: data.data.isLearningDuolingo === 1,
+                    grammar: data.data.isLearningGrammar === 1,
+                    speaking: data.data.isPracticeSpeaking === 1,
+                    vocabulary: data.data.isLearningVocabulary === 1,
+                    totalVocabulary: data.data.totalVocabulary,
+                    newWords: data.data.newWords || 0
+                });
+            }
+        });
+    };
+
+    useEffect(() => {
+        getReportToday();
+    }, []);
+
     return (
         <div className={'border-top mt-4 w-100'}>
             <label><span className={'me-1'}>&#x2022;</span>To do list:</label>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     vocabulary:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.vocabulary ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div
+                    className={`col-6 mt-2`}>
+                    {lessonStatus.vocabulary &&
+                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary || 0 : 0}
+                                     label={lessonStatus.vocabulary ? `${lessonStatus.totalVocabulary || 0}/100` : '0/100'}/>}
+                </div>
+                <div className={'col-1'}>
+                    {!lessonStatus.vocabulary && <button className={'btn btn-success text-start btn-sm'} type={'button'}
+                                                         onClick={() => handleDoneLesson('vocabulary')}> Ok
+                    </button>}
+                </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     duolingo:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.duolingo ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div
+                    className={`col-6 mt-2`}>
+                    {lessonStatus.duolingo && <ProgressBar currentPercent={lessonStatus.duolingo ? 100 : 0}
+                                                           label={lessonStatus.duolingo ? '1/1' : '0/1'}/>}
+                </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'} type={'button'}
-                            onClick={() => handleDoneLession('duolingo')}> Ok
-                    </button>
+                    {!lessonStatus.duolingo && <button className={'btn btn-success text-start btn-sm'} type={'button'}
+                                                       onClick={() => handleDoneLesson('duolingo')}> Ok
+                    </button>}
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     grammar:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.grammar ? 'border-bottom border-info' : ''}`}>1/40</Form.Label>
+                <div className={`col-6 mt-2`}>
+                    {lessonStatus.grammar && <ProgressBar currentPercent={lessonStatus.grammar ? 100 : 0}
+                                                          label={lessonStatus.grammar ? '1/1' : '0/1'}/>}
+                </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'}
-                            onClick={() => handleDoneLession('grammar')}> Ok
-                    </button>
+                    {!lessonStatus.grammar && <button className={'btn btn-success text-start btn-sm'}
+                                                      onClick={() => handleDoneLesson('grammar')}> Ok
+                    </button>}
                 </div>
             </div>
-            <div className={'w-100 row ms-1 mt-3'}>
+            <div className={'w-100 row ms-1 mt-2'}>
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>Learning
                     speaking:</Form.Label>
-                <Form.Label column={true}
-                            className={`col-6 ${lessionStatus.speaking ? 'border-bottom border-info' : ''}`}>0/1
-                    lession</Form.Label>
+                <div className={`col-6 mt-2`}>
+                    {lessonStatus.speaking && <ProgressBar currentPercent={lessonStatus.speaking ? 100 : 0}
+                                                           label={lessonStatus.speaking ? '1/1' : '0/1'}/>}
+                </div>
                 <div className={'col-1'}>
-                    <button className={'btn btn-success text-start btn-sm'}
-                            onClick={() => handleDoneLession('speaking')}> Ok
-                    </button>
+                    {!lessonStatus.speaking && <button className={'btn btn-success text-start btn-sm'}
+                                                       onClick={() => handleDoneLesson('speaking')}> Ok
+                    </button>}
+                </div>
+            </div>
+            <div className={'w-100 row ms-1 mt-2'}>
+                <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>New
+                    words:</Form.Label>
+                <div className={`col-6 mt-2`}>
+                    {lessonStatus.newWords &&
+                        <ProgressBar currentPercent={lessonStatus.newWords ? lessonStatus.newWords : 0}
+                                     label={lessonStatus.newWords}/>}
                 </div>
             </div>
         </div>

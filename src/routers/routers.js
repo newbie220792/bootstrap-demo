@@ -2,22 +2,23 @@ import AuthLayout from '../layouts/AuthLayout';
 import EmptyLayout from '../layouts/EmptyLayout';
 import DashboardComponent from '../pages/Dashboard/DashboardComponent';
 import NotFound from '../pages/Notfound/NotFound';
-import {PhotosComponent} from '../pages/Photos/PhotosComponent';
 import ProfileComponent from '../pages/Profile/ProfileComponent';
 import ReportComponent from '../pages/Report/ReportComponent';
+import {VocabularyComponent} from '../pages/Vocabulary/VocabularyComponent';
+import LoginComponent from '../pages/Login/LoginComponent';
 import {VideoComponent} from '../pages/Videos/VideoComponent';
-import {VocabularyComponent} from "../pages/Vocabulary/VocabularyComponent";
+import {PhotosComponent} from '../pages/Photos/PhotosComponent';
 
 export const routers = [
     {
-        path: '/',
-        component: DashboardComponent,
+        path: '/profile',
+        component: ProfileComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/profile',
-        component: ProfileComponent,
+        path: '/',
+        component: DashboardComponent,
         layout: AuthLayout,
         role: ['all'],
     },
@@ -46,9 +47,15 @@ export const routers = [
         role: ['all'],
     },
     {
+        path: '/login',
+        component: LoginComponent,
+        layout: EmptyLayout,
+        role: ['all'],
+    },
+    {
         path: '/vocabulary',
         component: VocabularyComponent,
         layout: AuthLayout,
         role: ['all'],
-    },
+    }
 ];
