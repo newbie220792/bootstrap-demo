@@ -1,7 +1,6 @@
 import {HttpStatus} from './HttpStatus';
 import store from '../stores/ReduxStore';
 import {LoadingSlice} from '../stores/slices/LoadingSlice';
-import {LOGIN_PATH} from './roles';
 
 export const fetchGet = (url, param, isShowSpinner) => {
     return fetchCommon(url, null, 'GET', param, isShowSpinner);
@@ -11,6 +10,43 @@ export const fetchPost = async (url, data, param, isShowSpinner) => {
     return fetchCommon(url, data, 'POST', param, isShowSpinner);
 };
 
+const getRefreshToken = () => {
+    const param = {
+        accessToken: localStorage.getItem('access_token'),
+        refreshToken: localStorage.getItem('refresh_token')
+    };
+    const url = process.env.REACT_APP_WEB_SERVICE_URL + '/auth/refresh-token' + '?' + new URLSearchParams(param).toString();
+    const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': '*',
+    };
+    return fetch(url, {
+        method: 'GET',
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        body: null,
+        headers: headers,
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error(JSON.stringify({status: res.status, message: res.statusText}));
+        } else {
+            return res;
+        }
+    }).then((res) => res.json())
+        .then(data => {
+            if (data && data.status === HttpStatus.SUCCESS) {
+                localStorage.setItem('access_token', data.data.accessToken);
+                localStorage.setItem('refresh_token', data.data.refreshToken);
+                return Promise.resolve(data);
+            } else {
+                // window.location.assign(LOGIN_PATH);
+                throw new Error(JSON.stringify(data));
+            }
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+};
 const {actions: LoadingActions} = LoadingSlice;
 export const fetchCommon = (url, data, method, param, isShowSpinner) => {
     if (isShowSpinner) {
@@ -36,11 +72,6 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
         headers: headers,
     }).then(res => {
         if (!res.ok) {
-            if (res.status === HttpStatus.UNAUTHORIZED) {
-                localStorage.removeItem('user');
-                localStorage.removeItem('access_token');
-                window.location.assign(LOGIN_PATH);
-            }
             throw new Error(JSON.stringify({status: res.status, message: res.statusText}));
         } else {
             return res;
@@ -54,9 +85,6 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
                 }));
             }
             if (data.status === HttpStatus.UNAUTHORIZED) {
-                localStorage.removeItem('user');
-                localStorage.removeItem('access_token');
-                window.location.assign(LOGIN_PATH);
                 throw new Error(JSON.stringify(data));
             } else if (data.status === HttpStatus.SUCCESS) {
                 return Promise.resolve(data);
@@ -65,8 +93,16 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
             }
         }).catch(err => {
             const error = JSON.parse(err.message);
-            console.log(error.message);
-            return Promise.resolve(error);
+            if (error.status === HttpStatus.UNAUTHORIZED) {
+                return getRefreshToken().then(res => {
+                    if (res.status === HttpStatus.SUCCESS) {
+                        return fetchCommon(url, data, method, param, isShowSpinner);
+                    }
+                });
+            } else {
+                console.log(error.message);
+                return Promise.reject(error);
+            }
         }).finally(() => {
             store.dispatch(LoadingActions.setIsLoading(false));
         });

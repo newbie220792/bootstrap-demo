@@ -38,6 +38,7 @@ const LoginComponent = () => {
             if (res.status === HttpStatus.SUCCESS) {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 localStorage.setItem('access_token', res.data.accessToken);
+                localStorage.setItem('refresh_token', res.data.refreshToken);
                 navigate(DASHBOARD_PATH);
             } else {
                 reset(null, {keepValues: true});
