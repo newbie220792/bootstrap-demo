@@ -1,6 +1,7 @@
 import {HttpStatus} from './HttpStatus';
 import store from '../stores/ReduxStore';
 import {LoadingSlice} from '../stores/slices/LoadingSlice';
+import {LOGIN_PATH} from './roles';
 
 export const fetchGet = (url, param, isShowSpinner) => {
     return fetchCommon(url, null, 'GET', param, isShowSpinner);
@@ -40,7 +41,7 @@ const getRefreshToken = () => {
                 localStorage.setItem('refresh_token', data.data.refreshToken);
                 return Promise.resolve(data);
             } else {
-                // window.location.assign(LOGIN_PATH);
+                window.location.assign(LOGIN_PATH);
                 throw new Error(JSON.stringify(data));
             }
         }).catch(error => {
