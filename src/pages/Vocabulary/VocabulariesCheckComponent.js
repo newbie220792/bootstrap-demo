@@ -91,6 +91,10 @@ const VocabulariesCheckComponent = () => {
         return phonetic.replaceAll('\"', '');
     };
 
+    const handleSpeakDescription = () => {
+        handleSpeak(vocabularies[vocabularyIndex].description);
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={'d-flex justify-content-center gap-1 mt-md-5 pt-5'}>
@@ -150,7 +154,7 @@ const VocabulariesCheckComponent = () => {
                     <label
                         className={'col-10 text-start fw-bold'}>Description: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].description &&
                         vocabularies[vocabularyIndex].description}</label>
-
+                    <span className={'ms-1 phonetic'} onClick={handleSpeakDescription}>🔈</span>
                 </div>
             </>}
             <div className={'row mt-2'}>
