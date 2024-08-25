@@ -41,10 +41,10 @@ const getRefreshToken = () => {
                 localStorage.setItem('refresh_token', data.data.refreshToken);
                 return Promise.resolve(data);
             } else {
-                window.location.assign(LOGIN_PATH);
                 throw new Error(JSON.stringify(data));
             }
         }).catch(error => {
+            window.location.assign(LOGIN_PATH);
             return Promise.reject(error);
         });
 };

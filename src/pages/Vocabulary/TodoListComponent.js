@@ -50,7 +50,7 @@ const TodoListComponent = () => {
                     speaking: data.data.isPracticeSpeaking === 1,
                     vocabulary: data.data.isLearningVocabulary === 1,
                     totalVocabulary: numberOfRevise === 0 ? data.data.totalVocabulary : numberOfRevise,
-                    newWords: data.data.newWords || 0
+                    newWords: data.data.numberOfNewWord || 0
                 });
             }
         });
