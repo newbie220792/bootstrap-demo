@@ -3,23 +3,20 @@ import {Form} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import ProgressBar from '../../components/ProgressBar';
 import {HttpStatus} from '../../common/HttpStatus';
+import {useDispatch, useSelector} from "react-redux";
+import {VocabularySlice} from "../../stores/slices/VocabularySlice";
 
 const TodoListComponent = () => {
     const [lessonStatus, setLessonStatus] = useState({});
-
+    const dispatch = useDispatch();
+    const {actions: vocabularyActions} = VocabularySlice;
+    const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
     const updateLesson = (lesson) => {
         return VocabulariesService.updateReportToday(lesson);
     };
 
     const handleDoneLesson = (code) => {
         switch (code) {
-            case 'vocabulary':
-                updateLesson('vocabulary').then(res => {
-                    if (res.status === HttpStatus.SUCCESS) {
-                        setLessonStatus(prevState => ({...prevState, vocabulary: true}));
-                    }
-                });
-                break;
             case 'duolingo':
                 updateLesson('duolingo').then(res => {
                     if (res.status === HttpStatus.SUCCESS) {
@@ -46,12 +43,13 @@ const TodoListComponent = () => {
     const getReportToday = () => {
         VocabulariesService.getReportToday().then(data => {
             if (data.status === HttpStatus.SUCCESS) {
+                dispatch(vocabularyActions.updateNumberOfWord(data.data.totalVocabulary));
                 setLessonStatus({
                     duolingo: data.data.isLearningDuolingo === 1,
                     grammar: data.data.isLearningGrammar === 1,
                     speaking: data.data.isPracticeSpeaking === 1,
                     vocabulary: data.data.isLearningVocabulary === 1,
-                    totalVocabulary: data.data.totalVocabulary,
+                    totalVocabulary: numberOfRevise === 0 ? data.data.totalVocabulary : numberOfRevise,
                     newWords: data.data.newWords || 0
                 });
             }
@@ -70,14 +68,10 @@ const TodoListComponent = () => {
                     vocabulary:</Form.Label>
                 <div
                     className={`col-6 mt-2`}>
-                    {lessonStatus.vocabulary &&
-                        <ProgressBar currentPercent={lessonStatus.vocabulary ? lessonStatus.totalVocabulary || 0 : 0}
-                                     label={lessonStatus.vocabulary ? `${lessonStatus.totalVocabulary || 0}/100` : '0/100'}/>}
-                </div>
-                <div className={'col-1'}>
-                    {!lessonStatus.vocabulary && <button className={'btn btn-success text-start btn-sm'} type={'button'}
-                                                         onClick={() => handleDoneLesson('vocabulary')}> Ok
-                    </button>}
+                    {lessonStatus.totalVocabulary &&
+                        <ProgressBar
+                            currentPercent={numberOfRevise ? numberOfRevise || 0 : 0}
+                            label={numberOfRevise ? `${numberOfRevise || 0}/100` : '0/100'}/>}
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>

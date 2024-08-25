@@ -4,10 +4,15 @@ import {Image} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import _ from 'lodash';
 import {HttpStatus} from '../../common/HttpStatus';
+import {useDispatch, useSelector} from "react-redux";
+import {VocabularySlice} from "../../stores/slices/VocabularySlice";
 
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([]);
     const [vocabularyIndex, setVocabularyIndex] = useState(0);
+    const dispatch = useDispatch();
+    const {actions: vocabularyActions} = VocabularySlice;
+    const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
     const {
         handleSubmit,
         control,
@@ -39,7 +44,6 @@ const VocabulariesCheckComponent = () => {
             window.responsiveVoice.speak('Vocabulary has not found');
         }
     };
-
     const onSubmit = () => {
         const {vocabulary} = getValues();
         if (!vocabularies || !vocabularies[vocabularyIndex] || !vocabularies[vocabularyIndex].vocabulary) {
@@ -50,6 +54,7 @@ const VocabulariesCheckComponent = () => {
         if (vocabulary.toLowerCase() === vocabularies[vocabularyIndex].vocabulary.toLowerCase()) {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
+                dispatch(vocabularyActions.updateNumberOfWord(numberOfRevise + 1));
                 handleUpdateVocabulary(vocabularyPassed.id, submitCount);
             }
             setVocabularyIndex(prevState => ++prevState);
@@ -153,8 +158,8 @@ const VocabulariesCheckComponent = () => {
                     <label className={'col-1 text-end'}>&#x2022;</label>
                     <label
                         className={'col-10 text-start fw-bold'}>Description: {vocabularies[vocabularyIndex] && vocabularies[vocabularyIndex].description &&
-                        vocabularies[vocabularyIndex].description}</label>
-                    <span className={'ms-1 phonetic'} onClick={handleSpeakDescription}>🔈</span>
+                        vocabularies[vocabularyIndex].description}<span className={'ms-1 phonetic'}
+                                                                        onClick={handleSpeakDescription}>🔈</span></label>
                 </div>
             </>}
             <div className={'row mt-2'}>
