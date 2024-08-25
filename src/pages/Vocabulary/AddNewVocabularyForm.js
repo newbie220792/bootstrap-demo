@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Form} from 'react-bootstrap';
 import {Controller, useForm} from 'react-hook-form';
 import $ from 'jquery';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
+import {useDispatch, useSelector} from "react-redux";
+import {VocabularySlice} from "../../stores/slices/VocabularySlice";
 
 const AddNewVocabularyForm = () => {
-    const [vocabularies, setVocabularies] = useState([]);
+    const dispatch = useDispatch();
+    const {actions: vocabularyActions} = VocabularySlice;
+    const numberOfNewWord = useSelector(state => state.VocabularySlice.numberOfNewWord);
     const {
         handleSubmit,
         control,
@@ -42,7 +46,6 @@ const AddNewVocabularyForm = () => {
         const {vocabulary, imageDescription, description} = getValues();
         handleSpeak(vocabulary);
         const vietnameseTranslation = await onTranslate(vocabulary);
-        // const imageDescription = await fetchPostImage(null, null);
         const req = {
             vocabulary: vocabulary,
             vietnameseTranslation: vietnameseTranslation,
@@ -52,6 +55,7 @@ const AddNewVocabularyForm = () => {
         VocabulariesService.addVocabulary(req).then(data => {
             if (data && data.status === HttpStatus.SUCCESS) {
                 handleSpeak('Success');
+                dispatch(vocabularyActions.updateNumberOfNewWord(numberOfNewWord + 1));
             } else {
                 handleSpeak(data.message);
             }

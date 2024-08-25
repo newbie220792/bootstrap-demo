@@ -11,6 +11,7 @@ const TodoListComponent = () => {
     const dispatch = useDispatch();
     const {actions: vocabularyActions} = VocabularySlice;
     const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
+    const numberOfNewWord = useSelector(state => state.VocabularySlice.numberOfNewWord);
     const updateLesson = (lesson) => {
         return VocabulariesService.updateReportToday(lesson);
     };
@@ -44,6 +45,7 @@ const TodoListComponent = () => {
         VocabulariesService.getReportToday().then(data => {
             if (data.status === HttpStatus.SUCCESS) {
                 dispatch(vocabularyActions.updateNumberOfWord(data.data.totalVocabulary));
+                dispatch(vocabularyActions.updateNumberOfNewWord(data.data.numberOfNewWord));
                 setLessonStatus({
                     duolingo: data.data.isLearningDuolingo === 1,
                     grammar: data.data.isLearningGrammar === 1,
@@ -119,8 +121,8 @@ const TodoListComponent = () => {
                     words:</Form.Label>
                 <div className={`col-6 mt-2`}>
                     {lessonStatus.newWords &&
-                        <ProgressBar currentPercent={lessonStatus.newWords ? lessonStatus.newWords : 0}
-                                     label={lessonStatus.newWords}/>}
+                        <ProgressBar currentPercent={numberOfNewWord ? numberOfNewWord : 0}
+                                     label={numberOfNewWord}/>}
                 </div>
             </div>
         </div>
