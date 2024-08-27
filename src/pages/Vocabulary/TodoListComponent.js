@@ -3,8 +3,8 @@ import {Form} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import ProgressBar from '../../components/ProgressBar';
 import {HttpStatus} from '../../common/HttpStatus';
-import {useDispatch, useSelector} from "react-redux";
-import {VocabularySlice} from "../../stores/slices/VocabularySlice";
+import {useDispatch, useSelector} from 'react-redux';
+import {VocabularySlice} from '../../stores/slices/VocabularySlice';
 
 const TodoListComponent = () => {
     const [lessonStatus, setLessonStatus] = useState({});
@@ -70,10 +70,9 @@ const TodoListComponent = () => {
                     vocabulary:</Form.Label>
                 <div
                     className={`col-6 mt-2`}>
-                    {lessonStatus.totalVocabulary &&
-                        <ProgressBar
-                            currentPercent={numberOfRevise ? numberOfRevise || 0 : 0}
-                            label={numberOfRevise ? `${numberOfRevise || 0}/100` : '0/100'}/>}
+                    <ProgressBar
+                        currentPercent={numberOfRevise}
+                        label={`${numberOfRevise}/100`}/>
                 </div>
             </div>
             <div className={'w-100 row ms-1 mt-2'}>
@@ -120,9 +119,8 @@ const TodoListComponent = () => {
                 <Form.Label column={true} className={'col-4 text-start'}><span className={'me-1'}>&#x2022;</span>New
                     words:</Form.Label>
                 <div className={`col-6 mt-2`}>
-                    {lessonStatus.newWords &&
-                        <ProgressBar currentPercent={numberOfNewWord ? numberOfNewWord : 0}
-                                     label={numberOfNewWord}/>}
+                    <ProgressBar currentPercent={numberOfNewWord}
+                                 label={numberOfNewWord}/>
                 </div>
             </div>
         </div>
