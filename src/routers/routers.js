@@ -8,6 +8,7 @@ import {VocabularyComponent} from '../pages/Vocabulary/VocabularyComponent';
 import LoginComponent from '../pages/Login/LoginComponent';
 import {VideoComponent} from '../pages/Videos/VideoComponent';
 import {PhotosComponent} from '../pages/Photos/PhotosComponent';
+import RegisterComponent from "../pages/Register/RegisterComponent";
 
 export const routers = [
     {
@@ -56,6 +57,12 @@ export const routers = [
         path: '/vocabulary',
         component: VocabularyComponent,
         layout: AuthLayout,
+        role: ['all'],
+    },
+    {
+        path: '/register',
+        component: RegisterComponent,
+        layout: EmptyLayout,
         role: ['all'],
     }
 ];
