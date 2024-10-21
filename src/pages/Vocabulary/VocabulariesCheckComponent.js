@@ -4,8 +4,8 @@ import {Image} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import _ from 'lodash';
 import {HttpStatus} from '../../common/HttpStatus';
-import {useDispatch, useSelector} from "react-redux";
-import {VocabularySlice} from "../../stores/slices/VocabularySlice";
+import {useDispatch, useSelector} from 'react-redux';
+import {VocabularySlice} from '../../stores/slices/VocabularySlice';
 
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([]);
@@ -34,7 +34,7 @@ const VocabulariesCheckComponent = () => {
         VocabulariesService.updateVocabularies(req).then();
     };
 
-    const handleSpeak = async (vocabulary) => {
+    const handleSpeak = (vocabulary) => {
         if (!_.isEmpty(vocabulary) && typeof vocabulary === 'object') {
             window.responsiveVoice.speak(vocabulary.vocabulary);
             setTimeout(() => window.responsiveVoice.speak(vocabulary.vietnameseTranslation, 'Vietnamese Female'), 1500);
@@ -98,7 +98,7 @@ const VocabulariesCheckComponent = () => {
 
     const handleSpeakDescription = () => {
         handleSpeak(vocabularies[vocabularyIndex].description);
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
