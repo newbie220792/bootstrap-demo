@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Image} from 'react-bootstrap';
 import {VocabulariesService} from '../../services/vocabulariesService';
@@ -6,6 +6,8 @@ import _ from 'lodash';
 import {HttpStatus} from '../../common/HttpStatus';
 import {useDispatch, useSelector} from 'react-redux';
 import {VocabularySlice} from '../../stores/slices/VocabularySlice';
+import {USER_KEY} from '../../common/constants';
+import guest from '../../assets/guest.jpeg';
 
 const VocabulariesCheckComponent = () => {
     const [vocabularies, setVocabularies] = useState([]);
@@ -13,6 +15,16 @@ const VocabulariesCheckComponent = () => {
     const dispatch = useDispatch();
     const {actions: vocabularyActions} = VocabularySlice;
     const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
+    
+    const userString = localStorage.getItem(USER_KEY);
+    const userInfo = useMemo(() => {
+        if (!!userString) {
+            return JSON.parse(userString);
+        } else {
+            return {avatar: guest, username: ''};
+        }
+    }, [userString]);
+
     const {
         handleSubmit,
         control,
@@ -29,7 +41,8 @@ const VocabulariesCheckComponent = () => {
     const handleUpdateVocabulary = (id, numberOfSubmit) => {
         const req = {
             id: id,
-            times: numberOfSubmit
+            times: numberOfSubmit,
+            userId: userInfo.id
         };
         VocabulariesService.updateVocabularies(req).then();
     };
