@@ -15,7 +15,7 @@ const VocabulariesCheckComponent = () => {
     const dispatch = useDispatch();
     const {actions: vocabularyActions} = VocabularySlice;
     const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
-    
+
     const userString = localStorage.getItem(USER_KEY);
     const userInfo = useMemo(() => {
         if (!!userString) {
@@ -42,7 +42,7 @@ const VocabulariesCheckComponent = () => {
         const req = {
             id: id,
             times: numberOfSubmit,
-            userId: userInfo.id
+            userId: userInfo.id || 1
         };
         VocabulariesService.updateVocabularies(req).then();
     };
@@ -68,7 +68,7 @@ const VocabulariesCheckComponent = () => {
             const vocabularyPassed = vocabularies[vocabularyIndex];
             if (vocabularyPassed && vocabularyPassed.id) {
                 dispatch(vocabularyActions.updateNumberOfWord(numberOfRevise + 1));
-                handleUpdateVocabulary(vocabularyPassed.id, submitCount);
+                handleUpdateVocabulary(vocabularyPassed.id, submitCount - 1);
             }
             setVocabularyIndex(prevState => ++prevState);
             reset(null, {keepSubmitCount: false, keepDefaultValues: true});

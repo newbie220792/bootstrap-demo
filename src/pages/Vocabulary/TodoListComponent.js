@@ -13,7 +13,7 @@ const TodoListComponent = () => {
     const numberOfRevise = useSelector(state => state.VocabularySlice.numberOfRevise);
     const numberOfNewWord = useSelector(state => state.VocabularySlice.numberOfNewWord);
     const updateLesson = (lesson) => {
-        return VocabulariesService.updateReportToday(lesson);
+        // return VocabulariesService.updateReportToday(lesson);
     };
 
     const handleDoneLesson = (code) => {
