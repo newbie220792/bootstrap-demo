@@ -14,13 +14,25 @@ import {Image} from 'react-bootstrap';
 import moment from 'moment';
 import PageNumberComponent from './PageNumberComponent';
 import {HttpStatus} from '../../common/HttpStatus';
+import {USER_KEY} from "../../common/constants";
+import guest from "../../assets/guest.jpeg";
 
 const ReportComponent = () => {
     const [{pageIndex, pageSize}, setPagination] = useState({pageIndex: 0, pageSize: 15});
     const pagination = {pageIndex, pageSize};
     const [totalRecords, setTotalRecords] = useState(0);
+    const userString = localStorage.getItem(USER_KEY);
+
+    const userInfo = useMemo(() => {
+        if (!!userString) {
+            return JSON.parse(userString);
+        } else {
+            return {avatar: guest, username: ''};
+        }
+    }, [userString]);
+
     const getReport = () => {
-        return VocabulariesService.getReport().then(data => {
+        return VocabulariesService.getReport(userInfo.id).then(data => {
             if (data.status === HttpStatus.SUCCESS) {
                 setTotalRecords(data.data.length);
                 return data.data;
