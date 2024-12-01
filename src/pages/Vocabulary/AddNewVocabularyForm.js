@@ -16,7 +16,6 @@ const AddNewVocabularyForm = () => {
         control,
         getValues,
         reset,
-        formState: {errors},
     } = useForm({
         reValidateMode: 'onChange',
         defaultValues: {
