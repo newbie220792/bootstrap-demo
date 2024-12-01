@@ -1,7 +1,6 @@
 import AuthLayout from '../layouts/AuthLayout';
 import EmptyLayout from '../layouts/EmptyLayout';
 import DashboardComponent from '../pages/Dashboard/DashboardComponent';
-import NotFound from '../pages/Notfound/NotFound';
 import ProfileComponent from '../pages/Profile/ProfileComponent';
 import ReportComponent from '../pages/Report/ReportComponent';
 import {VocabularyComponent} from '../pages/Vocabulary/VocabularyComponent';
@@ -9,34 +8,45 @@ import LoginComponent from '../pages/Login/LoginComponent';
 import {VideoComponent} from '../pages/Videos/VideoComponent';
 import {PhotosComponent} from '../pages/Photos/PhotosComponent';
 import RegisterComponent from "../pages/Register/RegisterComponent";
+import {
+    DASHBOARD_PATH,
+    LOGIN_PATH,
+    PHOTO_PATH,
+    PROFILE_PATH,
+    REGISTER_PATH,
+    REPORT_PATH,
+    VIDEO_PATH,
+    VOCABULARY_PATH
+} from "../common/roles";
+import NotFound from "../pages/Notfound/NotFound";
 
 export const routers = [
     {
-        path: '/profile',
+        path: PROFILE_PATH,
         component: ProfileComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/',
+        path: DASHBOARD_PATH,
         component: DashboardComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/videos',
+        path: VIDEO_PATH,
         component: VideoComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/photos',
+        path: PHOTO_PATH,
         component: PhotosComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/report',
+        path: REPORT_PATH,
         component: ReportComponent,
         layout: AuthLayout,
         role: ['all'],
@@ -48,19 +58,19 @@ export const routers = [
         role: ['all'],
     },
     {
-        path: '/login',
+        path: LOGIN_PATH,
         component: LoginComponent,
         layout: EmptyLayout,
         role: ['all'],
     },
     {
-        path: '/vocabulary',
+        path: VOCABULARY_PATH,
         component: VocabularyComponent,
         layout: AuthLayout,
         role: ['all'],
     },
     {
-        path: '/register',
+        path: REGISTER_PATH,
         component: RegisterComponent,
         layout: EmptyLayout,
         role: ['all'],

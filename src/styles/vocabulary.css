@@ -3,3 +3,15 @@
     --bs-table-bg: none;
     width: auto;
 }
+
+.warning_level_0 {
+    color: white;
+}
+
+.warning_level_1 {
+    color: coral;
+}
+
+.warning_level_2 {
+    color: red;
+}

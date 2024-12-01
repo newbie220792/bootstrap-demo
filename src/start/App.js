@@ -8,6 +8,8 @@ import {useEffect} from "react";
 const App = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const ROOT_PATH = process.env.PUBLIC_URL;
+    
     useEffect(() => {
         if (location.pathname === OAUTH2_REDIRECT_PATH) {
             const token = new URLSearchParams(location.search).get('token');
@@ -18,16 +20,16 @@ const App = () => {
                 getWindow('oauth2Modal').close();
                 localStorage.setItem('access_token', token);
                 localStorage.setItem('user', JSON.stringify({username: username, avatar: avatar}));
-                navigate(DASHBOARD_PATH);
+                navigate(ROOT_PATH + DASHBOARD_PATH);
                 window.opener.location = DASHBOARD_PATH;
             } else if (error) {
-                navigate(LOGIN_PATH);
+                navigate(ROOT_PATH + LOGIN_PATH);
                 alert(error);
             }
         } else {
             const accessToken = localStorage.getItem('access_token');
             if (!accessToken) {
-                navigate(LOGIN_PATH);
+                navigate(ROOT_PATH + LOGIN_PATH);
             }
         }
     }, [location.pathname]);
@@ -41,7 +43,7 @@ const App = () => {
                     return (
                         <Route
                             key={index}
-                            path={process.env.PUBLIC_URL + r.path}
+                            path={ROOT_PATH + r.path}
                             element={
                                 <Layout>
                                     <Page/>

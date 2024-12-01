@@ -14,6 +14,7 @@ import Clock from '../../components/Clock';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
+    const ROOT_PATH = process.env.PUBLIC_URL
     const [errorFromServer, setErrorFromServer] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -39,7 +40,7 @@ const LoginComponent = () => {
                 localStorage.setItem('user', JSON.stringify(res.data));
                 localStorage.setItem('access_token', res.data.accessToken);
                 localStorage.setItem('refresh_token', res.data.refreshToken);
-                navigate(DASHBOARD_PATH);
+                navigate(ROOT_PATH + DASHBOARD_PATH);
             } else {
                 reset(null, {keepValues: true});
                 setErrorFromServer(res.message);

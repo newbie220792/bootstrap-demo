@@ -106,7 +106,7 @@ const VocabulariesCheckComponent = () => {
     }, []);
 
     const formatPhonetic = (phonetic) => {
-        return phonetic.replaceAll('\"', '');
+        return phonetic.replaceAll('"', '');
     };
 
     const handleSpeakDescription = () => {

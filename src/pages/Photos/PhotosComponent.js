@@ -5,15 +5,12 @@ import {CommonSelect} from "../../components/CommonSelect";
 import {AutoComplete} from "./AutoComplete";
 
 export const PhotosComponent = () => {
-    const [isDisableSubmit, setIsDisableSubmit] = useState(true);
     const [selectedOption, setSelectedOption] = useState({});
 
     // const POST_URL = 'https://jsonplaceholder.typicode.com/posts';
     // const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments';
     const {
         handleSubmit,
-        getValues,
-        setValue,
         control,
         watch,
         reset,
@@ -30,8 +27,7 @@ export const PhotosComponent = () => {
     const onSubmit = (data) => {
         console.log(data)
     };
-    // console.log(errors)
-    // const userName = watch('userName')
+    
     const {balance, amount} = watch();
     const handleOnlyInputNum = (value) => {
         if (value.indexOf('.') === value.length - 1) {
@@ -87,6 +83,8 @@ export const PhotosComponent = () => {
                 // setSelectedOption(prevState => {
                 //     return {...prevState, comment: commentSelect, post: postSelects}
                 // })
+                break;
+            default:
                 break;
         }
     }
@@ -179,6 +177,8 @@ export const PhotosComponent = () => {
                                 />
                             </div>
                         </div>
+                    default:
+                        return <></>;
                 }
             })}
             <div className='col-1 d-flex gap-3'>

@@ -8,10 +8,12 @@ import {VocabulariesService} from '../services/vocabulariesService';
 import {LOGIN_PATH, PROFILE_PATH} from '../common/roles';
 import {ACCESS_TOKEN, USER_KEY} from "../common/constants";
 import fire from "../assets/fire.png";
+import * as WarningLevel from "../common/warning_level";
 
 export const Header = () => {
     const navigate = useNavigate();
     const userString = localStorage.getItem(USER_KEY);
+    const ROOT_PATH = process.env.PUBLIC_URL
     const userInfo = useMemo(() => {
         if (!!userString) {
             return JSON.parse(userString);
@@ -29,7 +31,7 @@ export const Header = () => {
         VocabulariesService.logout(logoutRequest).then();
         localStorage.removeItem(USER_KEY);
         localStorage.removeItem(ACCESS_TOKEN);
-        navigate(LOGIN_PATH);
+        navigate(ROOT_PATH + LOGIN_PATH);
     };
 
     const AvatarComponent = forwardRef(({children, ...rest}, ref) => {
@@ -42,15 +44,30 @@ export const Header = () => {
         );
     });
 
+    const getWarningColor = () => {
+        if (!!userInfo && !!userInfo.warningLevel) {
+            switch (userInfo.warningLevel) {
+                case WarningLevel.LEVEL_2:
+                    return 'warning_level_2';
+                case WarningLevel.LEVEL_1:
+                    return 'warning_level_1';
+                default:
+                    return 'warning_level_0';
+            }
+        } else {
+            return 'warning_level_0';
+        }
+    }
+
     return (
         <header className="site-header">
             <div className="site-identity d-flex flex-row">
                 <h1>
-                    <Link to={process.env.PUBLIC_URL + '/'}>Vocabularies Page</Link>
+                    <Link to={ROOT_PATH + '/'}>Vocabularies Page</Link>
                 </h1>
                 <div className={'d-flex align-items-center ps-2'}>
                     <Image src={fire} style={{width: 20, height: 20}}/>
-                    <label className={'ps-1'}>{userInfo.stayLearningTimes || 0}</label>
+                    <label className={`ps-1 ${getWarningColor()}`}>{userInfo.stayLearningTimes || 0}</label>
                 </div>
             </div>
             <nav className="site-navigation">
@@ -58,7 +75,7 @@ export const Header = () => {
                     {menus.map((menu) => {
                         return (
                             <li key={menu.id}>
-                                <Link to={process.env.PUBLIC_URL + menu.path}>
+                                <Link to={ROOT_PATH + menu.path}>
                                     {menu.name}
                                 </Link>
                             </li>
@@ -70,7 +87,7 @@ export const Header = () => {
                             <Dropdown.Menu>
                                 <Dropdown.Item href="#" disabled>{userInfo.username}</Dropdown.Item>
                                 <Dropdown.Item href="#" onClick={() => {
-                                    navigate(PROFILE_PATH);
+                                    navigate(ROOT_PATH + PROFILE_PATH);
                                 }}>Profile</Dropdown.Item>
                                 <Dropdown.Item href="#" onClick={logout}>Logout</Dropdown.Item>
                                 {/*<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>*/}
