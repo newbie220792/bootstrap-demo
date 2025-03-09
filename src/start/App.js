@@ -9,17 +9,18 @@ const App = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const ROOT_PATH = process.env.PUBLIC_URL;
-    
+
     useEffect(() => {
         if (location.pathname === OAUTH2_REDIRECT_PATH) {
             const token = new URLSearchParams(location.search).get('token');
             const error = new URLSearchParams(location.search).get('error');
             const username = new URLSearchParams(location.search).get('username');
             const avatar = new URLSearchParams(location.search).get('avatar');
+            const userId = new URLSearchParams(location.search).get('id');
             if (token) {
                 getWindow('oauth2Modal').close();
                 localStorage.setItem('access_token', token);
-                localStorage.setItem('user', JSON.stringify({username: username, avatar: avatar}));
+                localStorage.setItem('user', JSON.stringify({username: username, avatar: avatar, id: userId}));
                 navigate(ROOT_PATH + DASHBOARD_PATH);
                 window.opener.location = DASHBOARD_PATH;
             } else if (error) {

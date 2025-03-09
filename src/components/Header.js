@@ -6,7 +6,7 @@ import {Dropdown, Image} from 'react-bootstrap';
 import guest from '../assets/guest.jpeg';
 import {VocabulariesService} from '../services/vocabulariesService';
 import {LOGIN_PATH, PROFILE_PATH} from '../common/roles';
-import {ACCESS_TOKEN, USER_KEY} from "../common/constants";
+import {ACCESS_TOKEN, REFRESH_TOKEN, USER_KEY} from "../common/constants";
 import fire from "../assets/fire.png";
 import * as WarningLevel from "../common/warning_level";
 
@@ -31,6 +31,7 @@ export const Header = () => {
         VocabulariesService.logout(logoutRequest).then();
         localStorage.removeItem(USER_KEY);
         localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
         navigate(ROOT_PATH + LOGIN_PATH);
     };
 

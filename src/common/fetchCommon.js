@@ -94,7 +94,7 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
             }
         }).catch(err => {
             const error = JSON.parse(err.message);
-            if (error.status === HttpStatus.UNAUTHORIZED) {
+            if (error.status === HttpStatus.UNAUTHORIZED && localStorage.getItem('access_token')) {
                 return getRefreshToken().then(res => {
                     if (res.status === HttpStatus.SUCCESS) {
                         return fetchCommon(url, data, method, param, isShowSpinner);
