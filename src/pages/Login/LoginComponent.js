@@ -11,10 +11,11 @@ import {useNavigate} from 'react-router-dom';
 import {DASHBOARD_PATH} from '../../common/roles';
 import ErrorMessage from '../../components/ErrorMessage';
 import Clock from '../../components/Clock';
+import {ACCESS_TOKEN, REFRESH_TOKEN, USER_KEY} from '../../common/constants';
 
 const LoginComponent = () => {
     const navigate = useNavigate();
-    const ROOT_PATH = process.env.PUBLIC_URL
+    const ROOT_PATH = process.env.PUBLIC_URL;
     const [errorFromServer, setErrorFromServer] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -37,9 +38,9 @@ const LoginComponent = () => {
         setIsLoading(true);
         VocabulariesService.login({username, password}).then(res => {
             if (res.status === HttpStatus.SUCCESS) {
-                localStorage.setItem('user', JSON.stringify(res.data));
-                localStorage.setItem('access_token', res.data.accessToken);
-                localStorage.setItem('refresh_token', res.data.refreshToken);
+                localStorage.setItem(USER_KEY, JSON.stringify(res.data));
+                localStorage.setItem(ACCESS_TOKEN, res.data.accessToken);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refreshToken);
                 navigate(ROOT_PATH + DASHBOARD_PATH);
             } else {
                 reset(null, {keepValues: true});
@@ -50,6 +51,10 @@ const LoginComponent = () => {
 
     const handleSingleSignOn = (registrationId) => {
         window.open(`${process.env.REACT_APP_WEB_SERVICE_URL}/auth/oauth2/authorize/${registrationId}?redirect_uri=${window.location.origin}/oauth2/redirect`, 'oauth2Modal', 'width=400,height=400');
+    };
+
+    const handleSignup = () => {
+        console.log('signup');
     };
 
     return (
@@ -97,7 +102,7 @@ const LoginComponent = () => {
                         <ErrorMessage message={errorFromServer}/>}
                 </div>
             </form>
-            <Form.Label className={'mt-5'}>Or Sign Up Using</Form.Label>
+            <Form.Label className={'mt-5'}>Or Login Using</Form.Label>
             <div className={'d-flex mt-2 gap-4 justify-content-around'}>
                 <Image src={fb} className={'img'} title={'Facebook'} onClick={() => handleSingleSignOn('facebook')}/>
                 <Image src={google} className={'img'} title={'Google'} onClick={() => handleSingleSignOn('google')}/>
@@ -105,7 +110,7 @@ const LoginComponent = () => {
                 <Image src={microsoft} className={'img'} title={'Microsoft'}
                        onClick={() => handleSingleSignOn('microsoft')}/>
             </div>
-            <a className={'mt-5 sign-up text-uppercase'}>Sign up</a>
+            <button className={'btn btn-success mt-5 text-uppercase w-50'} onClick={handleSignup}>Sign up</button>
         </div>
     );
 };

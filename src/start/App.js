@@ -1,9 +1,10 @@
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import {routers} from '../routers/routers';
-import {DASHBOARD_PATH, LOGIN_PATH, OAUTH2_REDIRECT_PATH} from "../common/roles";
-import getWindow from "@popperjs/core/lib/dom-utils/getWindow";
-import {useEffect} from "react";
+import {DASHBOARD_PATH, LOGIN_PATH, OAUTH2_REDIRECT_PATH} from '../common/roles';
+import getWindow from '@popperjs/core/lib/dom-utils/getWindow';
+import {useEffect} from 'react';
+import {ACCESS_TOKEN, USER_KEY} from '../common/constants';
 
 const App = () => {
     const location = useLocation();
@@ -19,8 +20,8 @@ const App = () => {
             const userId = new URLSearchParams(location.search).get('id');
             if (token) {
                 getWindow('oauth2Modal').close();
-                localStorage.setItem('access_token', token);
-                localStorage.setItem('user', JSON.stringify({username: username, avatar: avatar, id: userId}));
+                localStorage.setItem(ACCESS_TOKEN, token);
+                localStorage.setItem(USER_KEY, JSON.stringify({username: username, avatar: avatar, id: userId}));
                 navigate(ROOT_PATH + DASHBOARD_PATH);
                 window.opener.location = DASHBOARD_PATH;
             } else if (error) {
