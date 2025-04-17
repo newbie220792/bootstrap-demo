@@ -2,6 +2,7 @@ import {HttpStatus} from './HttpStatus';
 import store from '../stores/ReduxStore';
 import {LoadingSlice} from '../stores/slices/LoadingSlice';
 import {LOGIN_PATH} from './roles';
+import {ACCESS_TOKEN, REFRESH_TOKEN} from "./constants";
 
 export const fetchGet = (url, param, isShowSpinner) => {
     return fetchCommon(url, null, 'GET', param, isShowSpinner);
@@ -13,8 +14,8 @@ export const fetchPost = async (url, data, param, isShowSpinner) => {
 
 const getRefreshToken = () => {
     const param = {
-        accessToken: localStorage.getItem('access_token'),
-        refreshToken: localStorage.getItem('refresh_token')
+        accessToken: localStorage.getItem(ACCESS_TOKEN),
+        refreshToken: localStorage.getItem(REFRESH_TOKEN)
     };
     const url = process.env.REACT_APP_WEB_SERVICE_URL + '/auth/refresh-token' + '?' + new URLSearchParams(param).toString();
     const headers = {
@@ -37,8 +38,8 @@ const getRefreshToken = () => {
     }).then((res) => res.json())
         .then(data => {
             if (data && data.status === HttpStatus.SUCCESS) {
-                localStorage.setItem('access_token', data.data.accessToken);
-                localStorage.setItem('refresh_token', data.data.refreshToken);
+                localStorage.setItem(ACCESS_TOKEN, data.data.accessToken);
+                localStorage.setItem(REFRESH_TOKEN, data.data.refreshToken);
                 return Promise.resolve(data);
             } else {
                 throw new Error(JSON.stringify(data));
@@ -61,8 +62,8 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
         'Accept': 'application/json',
         'Origin': '*',
     };
-    if (localStorage.getItem('access_token') && !url.includes('/logout')) {
-        headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
+    if (localStorage.getItem(ACCESS_TOKEN) && !url.includes('/logout')) {
+        headers.Authorization = 'Bearer ' + localStorage.getItem(ACCESS_TOKEN);
     }
 
     return fetch(process.env.REACT_APP_WEB_SERVICE_URL + url, {
@@ -94,7 +95,7 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
             }
         }).catch(err => {
             const error = JSON.parse(err.message);
-            if (error.status === HttpStatus.UNAUTHORIZED && localStorage.getItem('access_token')) {
+            if (error.status === HttpStatus.UNAUTHORIZED && localStorage.getItem(ACCESS_TOKEN)) {
                 return getRefreshToken().then(res => {
                     if (res.status === HttpStatus.SUCCESS) {
                         return fetchCommon(url, data, method, param, isShowSpinner);
