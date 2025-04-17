@@ -28,7 +28,9 @@ export const Header = () => {
             username: userInfo.username,
             token: token
         };
-        VocabulariesService.logout(logoutRequest).then();
+        VocabulariesService.logout(logoutRequest).catch(
+            reason => console.log(reason)
+        );
         localStorage.removeItem(USER_KEY);
         localStorage.removeItem(ACCESS_TOKEN);
         localStorage.removeItem(REFRESH_TOKEN);

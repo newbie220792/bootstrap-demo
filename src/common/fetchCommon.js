@@ -61,7 +61,7 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
         'Accept': 'application/json',
         'Origin': '*',
     };
-    if (localStorage.getItem('access_token')) {
+    if (localStorage.getItem('access_token') && !url.includes('/logout')) {
         headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
     }
 

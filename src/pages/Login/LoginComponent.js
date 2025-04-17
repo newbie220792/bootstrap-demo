@@ -5,6 +5,7 @@ import fb from '../../assets/facebook.png';
 import google from '../../assets/google.png';
 import github from '../../assets/github.png';
 import microsoft from '../../assets/microsoft.svg';
+import keycloak from '../../assets/keycloak.png';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
 import {useNavigate} from 'react-router-dom';
@@ -107,6 +108,8 @@ const LoginComponent = () => {
                 <Image src={fb} className={'img'} title={'Facebook'} onClick={() => handleSingleSignOn('facebook')}/>
                 <Image src={google} className={'img'} title={'Google'} onClick={() => handleSingleSignOn('google')}/>
                 <Image src={github} className={'img'} title={'Github'} onClick={() => handleSingleSignOn('github')}/>
+                <Image src={keycloak} className={'img'} title={'Keycloak'}
+                       onClick={() => handleSingleSignOn('keycloak')}/>
                 <Image src={microsoft} className={'img'} title={'Microsoft'}
                        onClick={() => handleSingleSignOn('microsoft')}/>
             </div>
