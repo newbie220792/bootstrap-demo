@@ -1,4 +1,4 @@
-import {fetchGet, fetchPost} from '../common/fetchCommon';
+import {fetchGet, fetchLogoutTest, fetchPost} from '../common/fetchCommon';
 
 export const VocabulariesService = {
     getList: () => fetchGet('/vocabulary/list', null, true),
@@ -9,5 +9,5 @@ export const VocabulariesService = {
     getReportToday: () => fetchGet('/vocabulary/report/today', null, true),
     login: (data) => fetchPost('/auth/login', data, null, true),
     logout: (data) => fetchPost('/auth/logout', data, null, true),
-    getLogout: () => fetchGet('/auth/logout', null, null, true)
+    getLogout: () => fetchLogoutTest()
 };

@@ -50,6 +50,7 @@ const getRefreshToken = () => {
         });
 };
 const {actions: LoadingActions} = LoadingSlice;
+
 export const fetchCommon = (url, data, method, param, isShowSpinner) => {
     if (isShowSpinner) {
         store.dispatch(LoadingActions.setIsLoading(true));
@@ -60,7 +61,7 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
     let headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        // 'Origin': '*',
+        'Origin': '*',
     };
     if (localStorage.getItem(ACCESS_TOKEN) && !url.includes('/logout')) {
         headers.Authorization = 'Bearer ' + localStorage.getItem(ACCESS_TOKEN);
@@ -108,5 +109,47 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
             }
         }).finally(() => {
             store.dispatch(LoadingActions.setIsLoading(false));
+        });
+};
+
+export const fetchLogoutTest = () => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': '*',
+    };
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+        headers.Authorization = 'Bearer ' + localStorage.getItem(ACCESS_TOKEN);
+    }
+
+    return fetch(process.env.REACT_APP_WEB_SERVICE_URL + '/auth/logout', {
+        method: 'GET',
+        mode: 'no-cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        body: null,
+        headers: headers,
+        credentials: 'include'
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error(JSON.stringify({status: res.status, message: res.statusText}));
+        } else {
+            return res;
+        }
+    }).then((res) => res.json())
+        .then(data => {
+            if (!data) {
+                console.log(data);
+            }
+            if (data.status === HttpStatus.UNAUTHORIZED) {
+                throw new Error(JSON.stringify(data));
+            } else if (data.status === HttpStatus.SUCCESS) {
+                return Promise.resolve(data);
+            } else {
+                throw new Error(JSON.stringify(data));
+            }
+        }).catch(err => {
+            const error = JSON.parse(err.message);
+            console.log(error.message);
+            return Promise.reject(error);
         });
 };
