@@ -1,7 +1,7 @@
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import {routers} from '../routers/routers';
-import {DASHBOARD_PATH, LOGIN_PATH, OAUTH2_REDIRECT_PATH} from '../common/roles';
+import {DASHBOARD_PATH, LOGIN_PATH, OAUTH2_REDIRECT_PATH, REGISTER_PATH} from '../common/roles';
 import getWindow from '@popperjs/core/lib/dom-utils/getWindow';
 import {useEffect} from 'react';
 import {ACCESS_TOKEN, USER_KEY} from '../common/constants';
@@ -30,7 +30,7 @@ const App = () => {
             }
         } else {
             const accessToken = localStorage.getItem('access_token');
-            if (!accessToken) {
+            if (!accessToken && location.pathname !== REGISTER_PATH) {
                 navigate(ROOT_PATH + LOGIN_PATH);
             }
         }

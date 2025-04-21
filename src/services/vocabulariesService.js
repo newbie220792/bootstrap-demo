@@ -8,5 +8,6 @@ export const VocabulariesService = {
     // updateReportToday: (lesson) => fetchGet('/vocabulary/report/lesson/' + lesson, null, true),
     getReportToday: () => fetchGet('/vocabulary/report/today', null, true),
     login: (data) => fetchPost('/auth/login', data, null, true),
-    logout: (data) => fetchPost('/auth/logout', data, null, true)
+    logout: (data) => fetchPost('/auth/logout', data, null, true),
+    getLogout: () => fetchGet('/auth/logout', null, null, true)
 };

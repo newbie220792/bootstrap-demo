@@ -9,7 +9,7 @@ import keycloak from '../../assets/keycloak.png';
 import {VocabulariesService} from '../../services/vocabulariesService';
 import {HttpStatus} from '../../common/HttpStatus';
 import {useNavigate} from 'react-router-dom';
-import {DASHBOARD_PATH} from '../../common/roles';
+import {DASHBOARD_PATH, REGISTER_PATH} from '../../common/roles';
 import ErrorMessage from '../../components/ErrorMessage';
 import Clock from '../../components/Clock';
 import {ACCESS_TOKEN, REFRESH_TOKEN, USER_KEY} from '../../common/constants';
@@ -56,6 +56,7 @@ const LoginComponent = () => {
 
     const handleSignup = () => {
         console.log('signup');
+        navigate(ROOT_PATH + REGISTER_PATH);
     };
 
     return (
