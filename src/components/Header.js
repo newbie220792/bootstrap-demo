@@ -1,24 +1,24 @@
 import * as React from 'react';
-import {forwardRef, useMemo} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {menus} from '../common/menus';
-import {Dropdown, Image} from 'react-bootstrap';
+import {Dropdown} from 'react-bootstrap';
 import guest from '../assets/guest.jpeg';
 import {VocabulariesService} from '../services/vocabulariesService';
 import {LOGIN_PATH, PROFILE_PATH} from '../common/roles';
+import {AvatarComponent} from "./AvatarComponent";
 
 export const Header = () => {
     const navigate = useNavigate();
-    const userString = localStorage.getItem('user');
-    const userInfo = useMemo(() => {
-        if (!!userString) {
-            return JSON.parse(userString);
-        } else {
-            return {avatar: guest, username: ''};
-        }
-    }, [userString]);
+    // const userString = localStorage.getItem('user');
+    // const userInfo = useMemo(() => {
+    //     if (!!userString) {
+    //         return JSON.parse(userString);
+    //     } else {
+    //         return {avatar: guest, username: ''};
+    //     }
+    // }, [userString]);
 
-    // const userInfo = {avatar: guest, username: ''};
+    const userInfo = {avatar: guest, username: 'test'};
 
     const logout = () => {
         const token = localStorage.getItem('access_token');
@@ -31,16 +31,6 @@ export const Header = () => {
         localStorage.removeItem('access_token');
         navigate(LOGIN_PATH);
     };
-
-    const AvatarComponent = forwardRef(({children, ...rest}, ref) => {
-        return (
-            <button {...rest} type="button" className={`btn`}
-                    ref={ref}><Image src={userInfo.avatar || guest || ''} alt={'avatar'}
-                                     title={userInfo.username || 'Guest'}
-                                     style={{width: 40, height: 40, borderRadius: '50%', cursor: 'pointer'}}/>
-            </button>
-        );
-    });
 
     return (
         <header className="site-header">

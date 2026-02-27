@@ -26,9 +26,9 @@ const App = () => {
             }
         } else {
             const accessToken = localStorage.getItem('access_token');
-            if (!accessToken) {
-                navigate(LOGIN_PATH);
-            }
+            // if (!accessToken) {
+            //     navigate(LOGIN_PATH);
+            // }
         }
     }, [location.pathname]);
 
@@ -40,7 +40,7 @@ const App = () => {
                     const Layout = r.layout || AuthLayout;
                     return (
                         <Route
-                            key={index}
+                            key={'app-' + index}
                             path={process.env.PUBLIC_URL + r.path}
                             element={
                                 <Layout>

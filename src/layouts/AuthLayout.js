@@ -11,10 +11,15 @@ const AuthLayout = ({children, ...props}) => {
         <>
             <Header/>
             {children}
-            {isLoading && <div
-                className={'position-absolute d-flex justify-content-center align-items-center h-100 w-100 opacity-50 bg-white top-0'}>
-                <Spinner animation="border" variant="dark"/>
-            </div>}
+            {isLoading && (
+                <div
+                    className={'position-absolute d-flex justify-content-center align-items-center h-100 w-100 opacity-50 bg-white top-0'}>
+                    <Spinner
+                        animation="border"
+                        variant="dark"
+                    />
+                </div>
+            )}
             <Footer/>
         </>
     );

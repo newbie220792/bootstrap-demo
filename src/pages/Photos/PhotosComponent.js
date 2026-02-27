@@ -55,7 +55,7 @@ export const PhotosComponent = () => {
             return false
         }
         return true
-    }, [{...watch()}])
+    }, [balance, amount])
 
     const handleChangeSelectValue = (e) => {
         console.log(e)

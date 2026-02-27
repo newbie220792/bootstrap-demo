@@ -42,9 +42,8 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
                 window.location.assign(LOGIN_PATH);
             }
             throw new Error(JSON.stringify({status: res.status, message: res.statusText}));
-        } else {
-            return res;
         }
+        return res;
     }).then((res) => res.json())
         .then(data => {
             if (!data) {
@@ -64,9 +63,8 @@ export const fetchCommon = (url, data, method, param, isShowSpinner) => {
                 throw new Error(JSON.stringify(data));
             }
         }).catch(err => {
-            const error = JSON.parse(err.message);
-            console.log(error.message);
-            return Promise.resolve(error);
+            console.log(err.message);
+            throw new Error(JSON.stringify(err));
         }).finally(() => {
             store.dispatch(LoadingActions.setIsLoading(false));
         });
